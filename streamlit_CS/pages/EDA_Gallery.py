@@ -244,7 +244,7 @@ stat_boxplot(col2_r4, df_filtered, "speed", "Speed")
 # ───────────────────────────
 # ROW 5 – controls + scatter
 # ───────────────────────────
-col1_r5, col2_r5 = st.columns([2, 3])  # 2/5 width and 3/5 width
+col1_r5, col2_r5 = st.columns([1, 2])  # 1/3 width and 2/3 width
 
 with col1_r5:
     st.subheader("Scatterplot Controls")
@@ -259,12 +259,12 @@ with col1_r5:
     }
 
     x_label = st.selectbox(
-        "X-axis stat",
+        "X-Axis Stat",
         list(stat_labels.keys()),
         index=list(stat_labels.keys()).index("Attack")
     )
     y_label = st.selectbox(
-        "Y-axis stat",
+        "Y-Axis Stat",
         list(stat_labels.keys()),
         index=list(stat_labels.keys()).index("Special Attack")
     )
@@ -272,7 +272,13 @@ with col1_r5:
     x_stat = stat_labels[x_label]
     y_stat = stat_labels[y_label]
 
-    st.markdown("**Types to include**")
+    show_diag_line = st.checkbox(
+        "Show Y = X Reference Line",
+        value=False,
+        help="When checked, draws a diagonal line where the two stats are equal."
+    )
+
+    st.markdown("**Types to Include**")
 
     type_col1, type_col2, type_col3 = st.columns(3)
 
@@ -330,6 +336,32 @@ with col2_r5:
                     "pokemon_id": True,
                 },
             )
+
+            if show_diag_line:
+                df_scatter[x_stat] = pd.to_numeric(df_scatter[x_stat], errors="coerce")
+                df_scatter[y_stat] = pd.to_numeric(df_scatter[y_stat], errors="coerce")
+                df_scatter_clean = df_scatter.dropna(subset=[x_stat, y_stat])
+
+                if not df_scatter_clean.empty:
+                    min_val = min(
+                        df_scatter_clean[x_stat].min(),
+                        df_scatter_clean[y_stat].min()
+                    )
+                    max_val = max(
+                        df_scatter_clean[x_stat].max(),
+                        df_scatter_clean[y_stat].max()
+                    )
+
+                    fig_scatter.add_shape(
+                        type="line",
+                        x0=min_val,
+                        y0=min_val,
+                        x1=max_val,
+                        y1=max_val,
+                        line=dict(color="gray", dash="dash"),
+                        layer="above",
+                        name="y = x",
+                    )
 
             fig_scatter.update_layout(
                 xaxis_title=x_label,
