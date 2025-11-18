@@ -167,8 +167,37 @@ with big_col_r1:
         st.plotly_chart(fig, use_container_width=True)
 
 with col3_r1:
-    st.subheader("Row 1 — Column 3")
-    st.write("Placeholder text")
+    st.subheader("Number of Pokémon by Primary Type")
+
+    if df_filtered.empty:
+        st.warning("No Pokémon available for the selected filters.")
+    else:
+        # Count Pokémon by primary type
+        type_counts_bar = (
+            df_filtered.groupby("primary_type")["pokemon_id"]
+            .count()
+            .reset_index(name="count")
+            .sort_values("count", ascending=False)
+        )
+
+        fig_bar = px.bar(
+            type_counts_bar,
+            x="primary_type",
+            y="count",
+            title="Pokémon Count by Primary Type",
+            color="primary_type",
+            color_discrete_map=TYPE_COLORS,
+            text_auto=True,
+        )
+
+        fig_bar.update_layout(
+            xaxis_title="Primary Type",
+            yaxis_title="Number of Pokémon",
+            margin=dict(l=10, r=10, t=40, b=10),
+            showlegend=False,
+        )
+
+        st.plotly_chart(fig_bar, use_container_width=True)
 
 # ───────────────────────────
 # ROW 2
