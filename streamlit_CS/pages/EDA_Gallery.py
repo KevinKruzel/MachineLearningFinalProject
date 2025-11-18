@@ -24,7 +24,7 @@ TYPE_COLORS = {
     "ghost":   "#735797",
     "dragon":  "#6F35FC",
     "dark":    "#705746",
-    "steel":   "#B7B7CE",
+    "steel":  "#B7B7CE",
     "fairy":   "#D685AD"
 }
 
@@ -100,7 +100,7 @@ st.caption(f"Current filters: {len(df_filtered)} Pokémon selected.")
 # ───────────────────────────
 # ROW 1
 # ───────────────────────────
-big_col_r1_left, big_col_r1_right = st.columns([2, 2])
+big_col_r1_left, big_col_r1_right = st.columns([3, 2])
 
 with big_col_r1_left:
     st.subheader("Type Combination Heatmap")
@@ -185,7 +185,7 @@ with big_col_r1_right:
 # ───────────────────────────
 # ROW 2
 # ───────────────────────────
-col1_r2, col2_r2, col3_r2, col4_r2 = st.columns(4)
+col1_r2, col2_r2, col3_r2, col4_r2, col5_r2 = st.columns(5)
 
 with col1_r2:
     st.subheader("Row 2 — Column 1")
@@ -203,10 +203,14 @@ with col4_r2:
     st.subheader("Row 2 — Column 4")
     st.write("Placeholder text")
 
+with col5_r2:
+    st.subheader("Row 2 — Column 5")
+    st.write("Placeholder text")
+
 # ───────────────────────────
 # ROW 3
 # ───────────────────────────
-col1_r3, col2_r3, col3_r3, col4_r3 = st.columns(4)
+col1_r3, col2_r3, col3_r3, col4_r3, col5_r3 = st.columns(5)
 
 with col1_r3:
     st.subheader("Row 3 — Column 1")
@@ -222,6 +226,10 @@ with col3_r3:
 
 with col4_r3:
     st.subheader("Row 3 — Column 4")
+    st.write("Placeholder text.")
+
+with col5_r3:
+    st.subheader("Row 3 — Column 5")
     st.write("Placeholder text.")
 
 st.divider()
