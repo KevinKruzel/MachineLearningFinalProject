@@ -273,6 +273,13 @@ with col1_r5:
     x_stat = stat_labels[x_label]
     y_stat = stat_labels[y_label]
 
+    # Put this BEFORE the type checkboxes so you can clearly see it
+    show_diag_line = st.checkbox(
+        "Show y = x reference line",
+        value=False,
+        help="When checked, draws a diagonal line where the two stats are equal."
+    )
+
     st.markdown("**Types to include**")
 
     type_col1, type_col2, type_col3 = st.columns(3)
@@ -298,12 +305,6 @@ with col1_r5:
             default_checked = (t in ["fighting", "psychic"])
             if st.checkbox(t.capitalize(), value=default_checked, key=f"type_{t}_3"):
                 selected_types.append(t)
-
-    show_diag_line = st.checkbox(
-        "Show y = x reference line",
-        value=False,
-        help="When checked, draws a diagonal line where the two stats are equal."
-    )
 
 with col2_r5:
     st.subheader("Stat vs Stat Scatterplot")
@@ -356,7 +357,6 @@ with col2_r5:
                     y1=max_val,
                     line=dict(color="gray", dash="dash"),
                     layer="above",
-                    name="y = x",
                 )
 
             fig_scatter.update_layout(
