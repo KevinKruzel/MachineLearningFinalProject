@@ -111,6 +111,51 @@ if not include_dual_typed:
 # Optional: small status line
 st.caption(f"Current filters: {len(df_filtered)} Pokémon selected.")
 
+# Heatmap color scheme selector (under filters)
+st.sidebar.subheader("Heatmap Color Scheme")
+
+colorscale_options = [
+    "Viridis_r",
+    "Viridis",
+    "Cividis_r",
+    "Cividis",
+    "Plasma_r",
+    "Plasma",
+    "Inferno_r",
+    "Inferno",
+    "Magma_r",
+    "Magma",
+    "Turbo_r",
+    "Turbo",
+    "Blues_r",
+    "Blues",
+    "Greens_r",
+    "Greens",
+    "Reds_r",
+    "Reds",
+    "Oranges_r",
+    "Oranges",
+    "Ice",
+    "Teal",
+    "Portland",
+    "RdBu_r",
+    "RdBu",
+    "RdYlGn_r",
+    "RdYlGn",
+    "Spectral",
+    "Balance",
+    "Earth",
+    "twilight_r",
+    "twilight",
+    "hsv",
+]
+
+selected_scale = st.sidebar.selectbox(
+    "Choose colorscale",
+    options=colorscale_options,
+    index=0,
+)
+
 # ───────────────────────────
 # ROW 1
 # ───────────────────────────
@@ -154,8 +199,7 @@ with big_col_r1:
             pivot_table,
             text_auto=True,
             aspect="auto",
-            # reversed colorscale: lighter = fewer, darker = more
-            color_continuous_scale="Plasma",
+            color_continuous_scale=selected_scale,  # <- comes from sidebar
             labels=dict(color="Number of Pokémon"),
         )
 
