@@ -195,48 +195,44 @@ with col2_r2:
 with big_col_r2:
     st.subheader("HP Distribution by Primary Type")
 
-    if df_filtered.empty:
-        st.warning("No Pokémon available for the selected filters.")
-    else:
-        type_hp_means = (
-            df_filtered.groupby("primary_type")["hp"]
-            .mean()
-            .sort_values(ascending=True)
-        )
-        type_order = type_hp_means.index.tolist()
+if df_filtered.empty:
+    st.warning("No Pokémon available for the selected filters.")
+else:
+    type_order = (
+        df_filtered.groupby("primary_type")["hp"]
+        .mean()
+        .reset_index()
+        .sort_values("hp")["primary_type"]
+        .tolist()
+    )
 
-        fig_box = px.box(
-            df_filtered,
-            x="primary_type",
-            y="hp",
-            color="primary_type",
-            color_discrete_map=TYPE_COLORS,
-            category_orders={"primary_type": type_order},
-            title="HP Stat Distribution Grouped by Primary Type",
-            points="outliers",
-        )
+    fig_box = px.box(
+        df_filtered,
+        x="primary_type",
+        y="hp",
+        category_orders={"primary_type": type_order},
+        title="HP Stat Distribution by Primary Type",
+        color="primary_type",
+        color_discrete_map=TYPE_COLORS,
+    )
 
-        outline_color = "#666666"
-
-        for trace in fig_box.data:
-            t = trace.name
-            fill = TYPE_COLORS.get(t, "#888888")
-            trace.update(
-                fillcolor=fill,
-                line_color=outline_color,
-                marker_color=fill,
-                marker_line_color=outline_color,
-                marker_line_width=1.5,
-            )
-
-        fig_box.update_layout(
-            xaxis_title="Primary Type (sorted by mean HP)",
-            yaxis_title="HP",
-            margin=dict(l=10, r=10, t=40, b=10),
-            showlegend=False,
+    for trace in fig_box.data:
+        t = trace.name
+        c = TYPE_COLORS.get(t, "#808080")
+        trace.update(
+            marker_color=c,
+            marker_line_color=c,
+            line_color=c,
         )
 
-        st.plotly_chart(fig_box, use_container_width=True)
+    fig_box.update_layout(
+        xaxis_title="Primary Type",
+        yaxis_title="HP",
+        margin=dict(l=10, r=10, t=40, b=10),
+        showlegend=False,
+    )
+
+    st.plotly_chart(fig_box, use_container_width=True)
 
 # ───────────────────────────
 # ROW 3
