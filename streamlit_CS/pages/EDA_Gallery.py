@@ -15,7 +15,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-DATA_PATH = Path(__file__).parent.parent / "data" / "Coffee_sales.csv"
+DATA_PATH = Path(__file__).parent.parent / "data" / "pokemon_dataset.csv"
 df = pd.read_csv(DATA_PATH)
 
 st.title("Exploratory Data Analysis Gallery")
@@ -85,6 +85,6 @@ csv_data = df.to_csv(index=False).encode('utf-8')
 st.download_button(
     label="📥 Download Raw Data (CSV)",
     data=csv_data,
-    file_name="Coffee_sales.csv",
+    file_name="pokemon_dataset.csv",
     mime="text/csv",
 )
