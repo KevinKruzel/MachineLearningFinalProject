@@ -40,36 +40,13 @@ df = pd.read_csv(DATA_PATH)
 
 st.title("Exploratory Data Analysis Gallery")
 
-# ───────────────────────────
-# SIDEBAR FILTERS
-# ───────────────────────────
 st.sidebar.header("Filters")
 
-# Checkbox: include legendary Pokémon (default True)
-include_legendary = st.sidebar.checkbox(
-    "Include Legendary Pokémon",
-    value=True
-)
+include_legendary = st.sidebar.checkbox("Include Legendary Pokémon", value=True)
+include_non_fully_evolved = st.sidebar.checkbox("Include Non-Fully Evolved Pokémon", value=True)
+include_regional_variants = st.sidebar.checkbox("Include Regional Variants", value=True)
+include_dual_typed = st.sidebar.checkbox("Include Dual-Typed Pokémon", value=True)
 
-# Checkbox: include non-fully-evolved Pokémon (default True)
-include_non_fully_evolved = st.sidebar.checkbox(
-    "Include Non-Fully Evolved Pokémon",
-    value=True
-)
-
-# Checkbox: include regional variants (default True)
-include_regional_variants = st.sidebar.checkbox(
-    "Include Regional Variants",
-    value=True
-)
-
-# Checkbox: include dual-typed Pokémon (default False)
-include_dual_typed = st.sidebar.checkbox(
-    "Include Dual-Typed Pokémon",
-    value=True
-)
-
-# Generation range slider
 min_gen = int(df["generation"].min())
 max_gen = int(df["generation"].max())
 
@@ -81,41 +58,29 @@ gen_min, gen_max = st.sidebar.slider(
     help="Filter Pokémon by generation number.",
 )
 
-# Build filtered dataframe
 df_filtered = df.copy()
 
-# Apply generation filter
 df_filtered = df_filtered[
     (df_filtered["generation"] >= gen_min) &
     (df_filtered["generation"] <= gen_max)
 ]
 
-# Apply legendary filter
 if not include_legendary:
     df_filtered = df_filtered[df_filtered["is_legendary"] == False]
 
-# Apply non-fully-evolved filter
-# If the box is unchecked, we keep only fully evolved Pokémon
 if not include_non_fully_evolved:
     df_filtered = df_filtered[df_filtered["is_fully_evolved"] == True]
 
-# Apply regional variants filter
 if not include_regional_variants:
     df_filtered = df_filtered[df_filtered["is_regional_variant"] == False]
 
-# Apply dual-typed filter
-# If unchecked, we keep only mono-type Pokémon
 if not include_dual_typed:
     df_filtered = df_filtered[df_filtered["is_mono-type"] == True]
-# If checked, we include both mono and dual types (no extra filter)
 
-# Optional: small status line
 st.caption(f"Current filters: {len(df_filtered)} Pokémon selected.")
 
-# ───────────────────────────
 # ROW 1
-# ───────────────────────────
-big_col_r1, col3_r1 = st.columns([2, 1])
+big_col_r1, col2_r1, col3_r1, col4_r1 = st.columns([2, 1, 1, 1])
 
 with big_col_r1:
     st.subheader("Type Combination Heatmap")
@@ -124,20 +89,16 @@ with big_col_r1:
         st.warning("No Pokémon available for the selected filters.")
     else:
         temp = df_filtered.copy()
-
-        # For mono-type Pokémon, treat them as (primary_type, primary_type)
         temp["secondary_type_display"] = temp["secondary_type"]
         mono_mask = temp["secondary_type_display"].isna()
         temp.loc[mono_mask, "secondary_type_display"] = temp.loc[mono_mask, "primary_type"]
 
-        # Count Pokémon by (primary_type, secondary_type_display)
         type_counts = (
             temp.groupby(["primary_type", "secondary_type_display"])["pokemon_id"]
             .count()
             .reset_index(name="count")
         )
 
-        # Pivot to matrix form
         pivot_table = type_counts.pivot_table(
             index="secondary_type_display",
             columns="primary_type",
@@ -145,7 +106,6 @@ with big_col_r1:
             fill_value=0,
         )
 
-        # Alphabetical order for both axes
         pivot_table = pivot_table.reindex(
             index=sorted(pivot_table.index),
             columns=sorted(pivot_table.columns),
@@ -167,13 +127,27 @@ with big_col_r1:
 
         st.plotly_chart(fig, use_container_width=True)
 
+with col2_r1:
+    st.subheader("Pokémon Count by Primary Type (Part 1)")
+    st.write("Placeholder text")
+
 with col3_r1:
-    st.subheader("Number of Pokémon by Primary Type")
+    st.subheader("Pokémon Count by Primary Type (Part 2)")
+    st.write("Placeholder text")
+
+with col4_r1:
+    st.subheader("Pokémon Count by Primary Type (Part 3)")
+    st.write("Placeholder text")
+
+# ROW 2
+col1_r2, col2_r2 = st.columns([2, 2])
+
+with col1_r2:
+    st.subheader("Pokémon Count by Primary Type")
 
     if df_filtered.empty:
         st.warning("No Pokémon available for the selected filters.")
     else:
-        # Count Pokémon by primary type
         type_counts_bar = (
             df_filtered.groupby("primary_type")["pokemon_id"]
             .count()
@@ -202,49 +176,36 @@ with col3_r1:
 
         st.plotly_chart(fig_bar, use_container_width=True)
 
-# ───────────────────────────
-# ROW 2
-# ───────────────────────────
-col1_r2, col2_r2, col3_r2 = st.columns(3)
-
-with col1_r2:
-    st.subheader("Row 2 — Column 1")
-    st.write("Placeholder text")
-
 with col2_r2:
     st.subheader("Row 2 — Column 2")
     st.write("Placeholder text")
 
-with col3_r2:
-    st.subheader("Row 2 — Column 3")
-    st.write("Placeholder text")
-
-# ───────────────────────────
 # ROW 3
-# ───────────────────────────
-col1_r3, col2_r3, col3_r3 = st.columns(3)
+c1, c2, c3, c4 = st.columns(4)
 
-with col1_r3:
+with c1:
     st.subheader("Row 3 — Column 1")
     st.write("Placeholder text.")
 
-with col2_r3:
+with c2:
     st.subheader("Row 3 — Column 2")
     st.write("Placeholder text.")
 
-with col3_r3:
+with c3:
     st.subheader("Row 3 — Column 3")
+    st.write("Placeholder text.")
+
+with c4:
+    st.subheader("Row 3 — Column 4")
     st.write("Placeholder text.")
 
 st.divider()
 
-# Footer
 st.caption("**Data source:** https://pokeapi.co")
 
 with st.expander("Data Preview"):
     st.dataframe(df)
 
-# Read the CSV file for download
 csv_data = df.to_csv(index=False).encode('utf-8')
 st.download_button(
     label="📥 Download Raw Data (CSV)",
