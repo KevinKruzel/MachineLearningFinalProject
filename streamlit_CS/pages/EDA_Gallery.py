@@ -244,7 +244,7 @@ stat_boxplot(col2_r4, df_filtered, "speed", "Speed")
 # ───────────────────────────
 # ROW 5 – controls + scatter
 # ───────────────────────────
-col1_r5, col2_r5 = st.columns(2)
+col1_r5, col2_r5 = st.columns([2, 3]) # 2/5 width and 3/5 width
 
 with col1_r5:
     st.subheader("Scatterplot Controls")
