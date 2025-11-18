@@ -94,7 +94,6 @@ if not include_dual_typed:
 
 st.caption(f"Current filters: {len(df_filtered)} Pokémon selected.")
 
-# helper for stat boxplots
 def stat_boxplot(container, df_filtered, stat_col, stat_label):
     with container:
         st.subheader(f"{stat_label} Distribution by Primary Type")
@@ -141,9 +140,9 @@ def stat_boxplot(container, df_filtered, stat_col, stat_label):
 # ───────────────────────────
 # ROW 1
 # ───────────────────────────
-big_col_r1_left, big_col_r1_right = st.columns([3, 2])
+col1_r1, col2_r1 = st.columns(2)
 
-with big_col_r1_left:
+with col1_r1:
     st.subheader("Type Combination Heatmap")
 
     if df_filtered.empty:
@@ -189,7 +188,7 @@ with big_col_r1_left:
 
         st.plotly_chart(fig, use_container_width=True)
 
-with big_col_r1_right:
+with col2_r1:
     st.subheader("Number of Pokémon by Primary Type")
 
     if df_filtered.empty:
@@ -224,48 +223,30 @@ with big_col_r1_right:
         st.plotly_chart(fig_bar, use_container_width=True)
 
 # ───────────────────────────
-# ROW 2 (HP, Attack)
+# ROW 2 – HP, Attack
 # ───────────────────────────
-big_left_r2, mid_r2, big_right_r2 = st.columns([2, 1, 2])
-
-stat_boxplot(big_left_r2, df_filtered, "hp", "HP")
-
-with mid_r2:
-    st.subheader("Row 2 — Column 3")
-    st.write("Placeholder text.")
-
-stat_boxplot(big_right_r2, df_filtered, "attack", "Attack")
+col1_r2, col2_r2 = st.columns(2)
+stat_boxplot(col1_r2, df_filtered, "hp", "HP")
+stat_boxplot(col2_r2, df_filtered, "attack", "Attack")
 
 # ───────────────────────────
-# ROW 3 (Defense, Sp. Atk)
+# ROW 3 – Defense, Special Attack
 # ───────────────────────────
-big_left_r3, mid_r3, big_right_r3 = st.columns([2, 1, 2])
-
-stat_boxplot(big_left_r3, df_filtered, "defense", "Defense")
-
-with mid_r3:
-    st.subheader("Row 3 — Column 3")
-    st.write("Placeholder text.")
-
-stat_boxplot(big_right_r3, df_filtered, "special-attack", "Special Attack")
+col1_r3, col2_r3 = st.columns(2)
+stat_boxplot(col1_r3, df_filtered, "defense", "Defense")
+stat_boxplot(col2_r3, df_filtered, "special-attack", "Special Attack")
 
 # ───────────────────────────
-# ROW 4 (Sp. Def, Speed)
+# ROW 4 – Special Defense, Speed
 # ───────────────────────────
-big_left_r4, mid_r4, big_right_r4 = st.columns([2, 1, 2])
-
-stat_boxplot(big_left_r4, df_filtered, "special-defense", "Special Defense")
-
-with mid_r4:
-    st.subheader("Row 4 — Column 3")
-    st.write("Placeholder text.")
-
-stat_boxplot(big_right_r4, df_filtered, "speed", "Speed")
+col1_r4, col2_r4 = st.columns(2)
+stat_boxplot(col1_r4, df_filtered, "special-defense", "Special Defense")
+stat_boxplot(col2_r4, df_filtered, "speed", "Speed")
 
 # ───────────────────────────
-# ROW 5 (5 separate columns, placeholders)
+# ROW 5 – placeholders
 # ───────────────────────────
-col1_r5, col2_r5, col3_r5, col4_r5, col5_r5 = st.columns(5)
+col1_r5, col2_r5 = st.columns(2)
 
 with col1_r5:
     st.subheader("Row 5 — Column 1")
@@ -273,18 +254,6 @@ with col1_r5:
 
 with col2_r5:
     st.subheader("Row 5 — Column 2")
-    st.write("Placeholder text.")
-
-with col3_r5:
-    st.subheader("Row 5 — Column 3")
-    st.write("Placeholder text.")
-
-with col4_r5:
-    st.subheader("Row 5 — Column 4")
-    st.write("Placeholder text.")
-
-with col5_r5:
-    st.subheader("Row 5 — Column 5")
     st.write("Placeholder text.")
 
 st.divider()
