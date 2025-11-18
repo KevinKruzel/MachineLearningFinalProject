@@ -323,6 +323,13 @@ with col2_r5:
                 color="primary_type",
                 color_discrete_map=TYPE_COLORS,
                 title=f"{x_label} vs {y_label} by Primary Type",
+                hover_name="pokemon_name",
+                hover_data={
+                    "primary_type": True,
+                    "generation": True,
+                    x_stat: True,
+                    y_stat: True,
+                    "pokemon_id": True,
             )
 
             fig_scatter.update_layout(
