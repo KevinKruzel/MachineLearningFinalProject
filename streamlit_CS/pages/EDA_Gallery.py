@@ -43,7 +43,11 @@ st.title("Exploratory Data Analysis Gallery")
 # ───────────────────────────
 # SIDEBAR FILTERS
 # ───────────────────────────
+st.sidebar.header("Appearance")
+dark_mode = st.sidebar.checkbox("Dark mode", value=False)
+
 st.sidebar.header("Filters")
+
 # Checkbox: include legendary Pokémon (default True)
 include_legendary = st.sidebar.checkbox(
     "Include Legendary Pokémon",
@@ -112,6 +116,46 @@ if not include_dual_typed:
 st.caption(f"Current filters: {len(df_filtered)} Pokémon selected.")
 
 # ───────────────────────────
+# GLOBAL STYLE BASED ON THEME
+# ───────────────────────────
+if dark_mode:
+    # Dark background + light text
+    st.markdown(
+        """
+        <style>
+        .stApp {
+            background-color: #111111;
+            color: #EEEEEE;
+        }
+        .block-container {
+            background-color: #111111;
+            color: #EEEEEE;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+    plotly_template = "plotly_dark"
+else:
+    # Light mode (use default Streamlit light background)
+    st.markdown(
+        """
+        <style>
+        .stApp {
+            background-color: #FFFFFF;
+            color: #000000;
+        }
+        .block-container {
+            background-color: #FFFFFF;
+            color: #000000;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+    plotly_template = "plotly_white"
+
+# ───────────────────────────
 # ROW 1
 # ───────────────────────────
 big_col_r1, col3_r1 = st.columns([2, 1])
@@ -159,6 +203,7 @@ with big_col_r1:
         )
         
         fig.update_layout(
+            template=plotly_template,
             xaxis_title="Primary Type",
             yaxis_title="Secondary Type",
             margin=dict(l=10, r=10, t=40, b=10),
@@ -193,6 +238,7 @@ with col3_r1:
         fig_bar.update_traces(textposition="outside")
         
         fig_bar.update_layout(
+            template=plotly_template,
             xaxis_title="Primary Type",
             yaxis_title="Number of Pokémon",
             margin=dict(l=10, r=10, t=40, b=10),
