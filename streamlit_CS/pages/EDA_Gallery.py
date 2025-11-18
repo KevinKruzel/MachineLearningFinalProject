@@ -24,7 +24,7 @@ TYPE_COLORS = {
     "ghost":   "#735797",
     "dragon":  "#6F35FC",
     "dark":    "#705746",
-    "steel":  "#B7B7CE",
+    "steel":   "#B7B7CE",
     "fairy":   "#D685AD"
 }
 
@@ -40,9 +40,6 @@ df = pd.read_csv(DATA_PATH)
 
 st.title("Exploratory Data Analysis Gallery")
 
-# ───────────────────────────
-# SIDEBAR FILTERS
-# ───────────────────────────
 st.sidebar.header("Filters")
 
 include_legendary = st.sidebar.checkbox(
@@ -185,7 +182,7 @@ with big_col_r1_right:
 # ───────────────────────────
 # ROW 2
 # ───────────────────────────
-col1_r2, col2_r2, col3_r2, col4_r2, col5_r2 = st.columns(5)
+col1_r2, col2_r2, big_col_r2 = st.columns([1, 1, 3])
 
 with col1_r2:
     st.subheader("Row 2 — Column 1")
@@ -195,22 +192,35 @@ with col2_r2:
     st.subheader("Row 2 — Column 2")
     st.write("Placeholder text")
 
-with col3_r2:
-    st.subheader("Row 2 — Column 3")
-    st.write("Placeholder text")
+with big_col_r2:
+    st.subheader("Attack Distribution by Primary Type")
 
-with col4_r2:
-    st.subheader("Row 2 — Column 4")
-    st.write("Placeholder text")
+    if df_filtered.empty:
+        st.warning("No Pokémon available for the selected filters.")
+    else:
+        fig_box = px.box(
+            df_filtered,
+            x="primary_type",
+            y="attack",
+            color="primary_type",
+            color_discrete_map=TYPE_COLORS,
+            title="Attack Stat Distribution Grouped by Primary Type",
+            points="outliers",
+        )
 
-with col5_r2:
-    st.subheader("Row 2 — Column 5")
-    st.write("Placeholder text")
+        fig_box.update_layout(
+            xaxis_title="Primary Type",
+            yaxis_title="Attack",
+            margin=dict(l=10, r=10, t=40, b=10),
+            showlegend=False,
+        )
+
+        st.plotly_chart(fig_box, use_container_width=True)
 
 # ───────────────────────────
 # ROW 3
 # ───────────────────────────
-col1_r3, col2_r3, col3_r3, col4_r3, col5_r3 = st.columns(5)
+col1_r3, col2_r3, big_col_r3 = st.columns([1, 1, 3])
 
 with col1_r3:
     st.subheader("Row 3 — Column 1")
@@ -220,16 +230,76 @@ with col2_r3:
     st.subheader("Row 3 — Column 2")
     st.write("Placeholder text.")
 
-with col3_r3:
-    st.subheader("Row 3 — Column 3")
+with big_col_r3:
+    st.subheader("Row 3 — Columns 3–5")
     st.write("Placeholder text.")
 
-with col4_r3:
-    st.subheader("Row 3 — Column 4")
+# ───────────────────────────
+# ROW 4
+# ───────────────────────────
+col1_r4, col2_r4, big_col_r4 = st.columns([1, 1, 3])
+
+with col1_r4:
+    st.subheader("Row 4 — Column 1")
     st.write("Placeholder text.")
 
-with col5_r3:
-    st.subheader("Row 3 — Column 5")
+with col2_r4:
+    st.subheader("Row 4 — Column 2")
+    st.write("Placeholder text.")
+
+with big_col_r4:
+    st.subheader("Row 4 — Columns 3–5")
+    st.write("Placeholder text.")
+
+# ───────────────────────────
+# ROW 5
+# ───────────────────────────
+col1_r5, col2_r5, big_col_r5 = st.columns([1, 1, 3])
+
+with col1_r5:
+    st.subheader("Row 5 — Column 1")
+    st.write("Placeholder text.")
+
+with col2_r5:
+    st.subheader("Row 5 — Column 2")
+    st.write("Placeholder text.")
+
+with big_col_r5:
+    st.subheader("Row 5 — Columns 3–5")
+    st.write("Placeholder text.")
+
+# ───────────────────────────
+# ROW 6
+# ───────────────────────────
+col1_r6, col2_r6, big_col_r6 = st.columns([1, 1, 3])
+
+with col1_r6:
+    st.subheader("Row 6 — Column 1")
+    st.write("Placeholder text.")
+
+with col2_r6:
+    st.subheader("Row 6 — Column 2")
+    st.write("Placeholder text.")
+
+with big_col_r6:
+    st.subheader("Row 6 — Columns 3–5")
+    st.write("Placeholder text.")
+
+# ───────────────────────────
+# ROW 7
+# ───────────────────────────
+col1_r7, col2_r7, big_col_r7 = st.columns([1, 1, 3])
+
+with col1_r7:
+    st.subheader("Row 7 — Column 1")
+    st.write("Placeholder text.")
+
+with col2_r7:
+    st.subheader("Row 7 — Column 2")
+    st.write("Placeholder text.")
+
+with big_col_r7:
+    st.subheader("Row 7 — Columns 3–5")
     st.write("Placeholder text.")
 
 st.divider()
