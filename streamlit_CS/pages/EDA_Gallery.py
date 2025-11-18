@@ -258,6 +258,16 @@ with col1_r5:
         "Speed": "speed",
     }
 
+    display_mode = st.selectbox(
+        "Points to display",
+        [
+            "Individual Pokémon only",
+            "Type averages only",
+            "Both individuals and averages",
+        ],
+        index=0,
+    )
+
     x_label = st.selectbox(
         "X-Axis Stat",
         list(stat_labels.keys()),
@@ -320,22 +330,67 @@ with col2_r5:
         if df_scatter.empty:
             st.warning("No Pokémon match the selected types.")
         else:
-            fig_scatter = px.scatter(
-                df_scatter,
-                x=x_stat,
-                y=y_stat,
-                color="primary_type",
-                color_discrete_map=TYPE_COLORS,
-                title=f"{x_label} vs {y_label} by Primary Type",
-                hover_name="pokemon_name",
-                hover_data={
-                    "primary_type": True,
-                    "generation": True,
-                    x_stat: True,
-                    y_stat: True,
-                    "pokemon_id": True,
-                },
-            )
+            if display_mode in ("Individual Pokémon only", "Both individuals and averages"):
+                fig_scatter = px.scatter(
+                    df_scatter,
+                    x=x_stat,
+                    y=y_stat,
+                    color="primary_type",
+                    color_discrete_map=TYPE_COLORS,
+                    title=f"{x_label} vs {y_label} by Primary Type",
+                    hover_name="pokemon_name",
+                    hover_data={
+                        "primary_type": True,
+                        "generation": True,
+                        x_stat: True,
+                        y_stat: True,
+                        "pokemon_id": True,
+                    },
+                )
+            else:
+                type_means = (
+                    df_scatter
+                    .groupby("primary_type", as_index=False)[[x_stat, y_stat]]
+                    .mean()
+                )
+
+                fig_scatter = px.scatter(
+                    type_means,
+                    x=x_stat,
+                    y=y_stat,
+                    color="primary_type",
+                    color_discrete_map=TYPE_COLORS,
+                    title=f"{x_label} vs {y_label} – Type Averages",
+                    hover_name="primary_type",
+                    hover_data={
+                        "primary_type": True,
+                        x_stat: True,
+                        y_stat: True,
+                    },
+                )
+
+            if display_mode in ("Type averages only", "Both individuals and averages"):
+                type_means = (
+                    df_scatter
+                    .groupby("primary_type", as_index=False)[[x_stat, y_stat]]
+                    .mean()
+                )
+
+                for _, row in type_means.iterrows():
+                    t = row["primary_type"]
+                    c = TYPE_COLORS.get(t, "#808080")
+                    fig_scatter.add_scatter(
+                        x=[row[x_stat]],
+                        y=[row[y_stat]],
+                        mode="markers",
+                        marker=dict(
+                            size=18,
+                            color=c,
+                            line=dict(color="black", width=1.5),
+                        ),
+                        name=f"{t} avg",
+                        showlegend=False,
+                    )
 
             if show_diag_line:
                 df_scatter[x_stat] = pd.to_numeric(df_scatter[x_stat], errors="coerce")
