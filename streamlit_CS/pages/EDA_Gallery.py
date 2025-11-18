@@ -158,6 +158,8 @@ with big_col_r1:
             labels=dict(color="Number of Pokémon"),
         )
 
+        fig_bar.update_traces(textposition="outside")
+        
         fig.update_layout(
             xaxis_title="Primary Type",
             yaxis_title="Secondary Type",
