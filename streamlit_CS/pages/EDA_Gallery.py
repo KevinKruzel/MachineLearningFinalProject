@@ -5,7 +5,6 @@ import plotly.express as px
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
-import plotly.graph_objects as go
 from pathlib import Path
 
 TYPE_COLORS = {
@@ -273,13 +272,6 @@ with col1_r5:
     x_stat = stat_labels[x_label]
     y_stat = stat_labels[y_label]
 
-    st.markdown("**Show y = x Reference Line**")
-    show_diag_line = st.checkbox(
-        "Show y = x reference line",
-        value=False,
-        help="When checked, draws a diagonal line where the two stats are equal."
-    )
-
     st.markdown("**Types to include**")
 
     type_col1, type_col2, type_col3 = st.columns(3)
@@ -314,7 +306,6 @@ with col2_r5:
     else:
         df_scatter = df_filtered.copy()
 
-        # Filter by selected types
         if selected_types:
             df_scatter = df_scatter[df_scatter["primary_type"].isin(selected_types)]
         else:
@@ -323,11 +314,6 @@ with col2_r5:
         if df_scatter.empty:
             st.warning("No Pokémon match the selected types.")
         else:
-            # Make sure the stats are numeric
-            df_scatter[x_stat] = pd.to_numeric(df_scatter[x_stat], errors="coerce")
-            df_scatter[y_stat] = pd.to_numeric(df_scatter[y_stat], errors="coerce")
-            df_scatter = df_scatter.dropna(subset=[x_stat, y_stat])
-
             fig_scatter = px.scatter(
                 df_scatter,
                 x=x_stat,
@@ -344,20 +330,6 @@ with col2_r5:
                     "pokemon_id": True,
                 },
             )
-
-            if show_diag_line:
-                min_val = min(df_scatter[x_stat].min(), df_scatter[y_stat].min())
-                max_val = max(df_scatter[x_stat].max(), df_scatter[y_stat].max())
-
-                fig_scatter.add_shape(
-                    type="line",
-                    x0=min_val,
-                    y0=min_val,
-                    x1=max_val,
-                    y1=max_val,
-                    line=dict(color="gray", dash="dash"),
-                    layer="above",
-                )
 
             fig_scatter.update_layout(
                 xaxis_title=x_label,
