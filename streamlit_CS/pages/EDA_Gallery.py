@@ -155,7 +155,7 @@ with big_col_r1:
             text_auto=True,
             aspect="auto",
             # reversed colorscale: lighter = fewer, darker = more
-            color_continuous_scale="Inferno",
+            color_continuous_scale="Plasma",
             labels=dict(color="Number of Pokémon"),
         )
 
