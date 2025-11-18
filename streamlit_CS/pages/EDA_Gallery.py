@@ -195,44 +195,44 @@ with col2_r2:
 with big_col_r2:
     st.subheader("HP Distribution by Primary Type")
 
-if df_filtered.empty:
-    st.warning("No Pokémon available for the selected filters.")
-else:
-    type_order = (
-        df_filtered.groupby("primary_type")["hp"]
-        .mean()
-        .reset_index()
-        .sort_values("hp")["primary_type"]
-        .tolist()
-    )
-
-    fig_box = px.box(
-        df_filtered,
-        x="primary_type",
-        y="hp",
-        category_orders={"primary_type": type_order},
-        title="HP Stat Distribution by Primary Type",
-        color="primary_type",
-        color_discrete_map=TYPE_COLORS,
-    )
-
-    for trace in fig_box.data:
-        t = trace.name
-        c = TYPE_COLORS.get(t, "#808080")
-        trace.update(
-            marker_color=c,
-            marker_line_color=c,
-            line_color=c,
+    if df_filtered.empty:
+        st.warning("No Pokémon available for the selected filters.")
+    else:
+        type_order = (
+            df_filtered.groupby("primary_type")["hp"]
+            .mean()
+            .reset_index()
+            .sort_values("hp")["primary_type"]
+            .tolist()
         )
 
-    fig_box.update_layout(
-        xaxis_title="Primary Type",
-        yaxis_title="HP",
-        margin=dict(l=10, r=10, t=40, b=10),
-        showlegend=False,
-    )
+        fig_box = px.box(
+            df_filtered,
+            x="primary_type",
+            y="hp",
+            category_orders={"primary_type": type_order},
+            title="HP Stat Distribution by Primary Type",
+            color="primary_type",
+            color_discrete_map=TYPE_COLORS,
+        )
 
-    st.plotly_chart(fig_box, use_container_width=True)
+        for trace in fig_box.data:
+            t = trace.name
+            c = TYPE_COLORS.get(t, "#808080")
+            trace.update(
+                marker_color=c,
+                marker_line_color=c,
+                line_color=c,
+            )
+
+        fig_box.update_layout(
+            xaxis_title="Primary Type",
+            yaxis_title="HP",
+            margin=dict(l=10, r=10, t=40, b=10),
+            showlegend=False,
+        )
+
+        st.plotly_chart(fig_box, use_container_width=True)
 
 # ───────────────────────────
 # ROW 3
