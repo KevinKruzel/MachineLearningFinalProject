@@ -157,8 +157,6 @@ with big_col_r1:
             color_continuous_scale="Reds",
             labels=dict(color="Number of Pokémon"),
         )
-
-        fig_bar.update_traces(textposition="outside")
         
         fig.update_layout(
             xaxis_title="Primary Type",
@@ -192,6 +190,8 @@ with col3_r1:
             text_auto=True,
         )
 
+        fig_bar.update_traces(textposition="outside")
+        
         fig_bar.update_layout(
             xaxis_title="Primary Type",
             yaxis_title="Number of Pokémon",
