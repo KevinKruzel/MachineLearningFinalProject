@@ -138,9 +138,9 @@ def stat_boxplot(container, df_filtered, stat_col, stat_label):
 # ───────────────────────────
 # ROW 1
 # ───────────────────────────
-col1_r1, col2_r1 = st.columns(2)
+col_heatmap, col_bar = st.columns([3, 2])  # 3/5 width and 2/5 width
 
-with col1_r1:
+with col_heatmap:
     st.subheader("Type Combination Heatmap")
 
     if df_filtered.empty:
@@ -177,7 +177,7 @@ with col1_r1:
             color_continuous_scale="Reds",
             labels=dict(color="Number of Pokémon"),
         )
-        
+
         fig.update_layout(
             xaxis_title="Primary Type",
             yaxis_title="Secondary Type",
@@ -186,7 +186,7 @@ with col1_r1:
 
         st.plotly_chart(fig, use_container_width=True)
 
-with col2_r1:
+with col_bar:
     st.subheader("Number of Pokémon by Primary Type")
 
     if df_filtered.empty:
@@ -210,7 +210,7 @@ with col2_r1:
         )
 
         fig_bar.update_traces(textposition="outside")
-        
+
         fig_bar.update_layout(
             xaxis_title="Primary Type",
             yaxis_title="Number of Pokémon",
