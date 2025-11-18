@@ -249,24 +249,70 @@ stat_boxplot(col2_r4, df_filtered, "speed", "Speed")
 col1_r5, col2_r5 = st.columns(2)
 
 with col1_r5:
-    st.subheader("Row 5 — Column 1")
-    st.write("Placeholder text.")
+    st.subheader("Scatterplot Controls")
+
+    stat_labels = {
+        "HP": "hp",
+        "Attack": "attack",
+        "Defense": "defense",
+        "Special Attack": "special-attack",
+        "Special Defense": "special-defense",
+        "Speed": "speed",
+    }
+
+    x_label = st.selectbox(
+        "X-axis stat",
+        list(stat_labels.keys()),
+        index=0  # default HP
+    )
+    y_label = st.selectbox(
+        "Y-axis stat",
+        list(stat_labels.keys()),
+        index=1  # default Attack
+    )
+
+    x_stat = stat_labels[x_label]
+    y_stat = stat_labels[y_label]
+
+    st.markdown("**Types to include**")
+
+    selected_types = []
+    for t in sorted(TYPE_COLORS.keys()):
+        display_label = t.capitalize()
+        default_checked = (t == "normal")
+        if st.checkbox(display_label, value=default_checked, key=f"type_{t}"):
+            selected_types.append(t)
 
 with col2_r5:
-    st.subheader("Row 5 — Column 2")
-    st.write("Placeholder text.")
+    st.subheader("Stat vs Stat Scatterplot")
 
-st.divider()
+    if df_filtered.empty:
+        st.warning("No Pokémon available for the selected filters.")
+    else:
+        df_scatter = df_filtered.copy()
 
-st.caption("**Data source:** https://pokeapi.co")
+        if selected_types:
+            df_scatter = df_scatter[df_scatter["primary_type"].isin(selected_types)]
+        else:
+            df_scatter = df_scatter.iloc[0:0]
 
-with st.expander("Data Preview"):
-    st.dataframe(df)
+        if df_scatter.empty:
+            st.warning("No Pokémon match the selected types.")
+        else:
+            fig_scatter = px.scatter(
+                df_scatter,
+                x=x_stat,
+                y=y_stat,
+                color="primary_type",
+                color_discrete_map=TYPE_COLORS,
+                title=f"{x_label} vs {y_label} by Primary Type",
+            )
 
-csv_data = df.to_csv(index=False).encode('utf-8')
-st.download_button(
-    label="📥 Download Raw Data (CSV)",
-    data=csv_data,
-    file_name="pokemon_dataset.csv",
-    mime="text/csv",
-)
+            fig_scatter.update_layout(
+                xaxis_title=x_label,
+                yaxis_title=y_label,
+                margin=dict(l=10, r=10, t=40, b=10),
+                legend_title="Primary Type",
+            )
+
+            st.plotly_chart(fig_scatter, use_container_width=True)
