@@ -276,12 +276,27 @@ with col1_r5:
 
     st.markdown("**Types to include**")
 
+    # Create two columns for checkboxes
+    type_col1, type_col2 = st.columns(2)
+
     selected_types = []
-    for t in sorted(TYPE_COLORS.keys()):
-        display_label = t.capitalize()
-        default_checked = (t == "normal")
-        if st.checkbox(display_label, value=default_checked, key=f"type_{t}"):
-            selected_types.append(t)
+    sorted_types = sorted(TYPE_COLORS.keys())
+
+    half = len(sorted_types) // 2
+
+    # First half in col 1
+    with type_col1:
+        for t in sorted_types[:half]:
+            default_checked = (t == "normal")
+            if st.checkbox(t.capitalize(), value=default_checked, key=f"type_{t}"):
+                selected_types.append(t)
+
+    # Second half in col 2
+    with type_col2:
+        for t in sorted_types[half:]:
+            default_checked = (t == "normal")
+            if st.checkbox(t.capitalize(), value=default_checked, key=f"type2_{t}"):
+                selected_types.append(t)
 
 with col2_r5:
     st.subheader("Stat vs Stat Scatterplot")
