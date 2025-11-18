@@ -154,7 +154,7 @@ with big_col_r1:
             pivot_table,
             text_auto=True,
             aspect="auto",
-            color_continuous_scale=Reds,
+            color_continuous_scale="Reds",
             labels=dict(color="Number of Pokémon"),
         )
 
