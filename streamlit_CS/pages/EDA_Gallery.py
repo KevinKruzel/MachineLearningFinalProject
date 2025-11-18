@@ -5,6 +5,7 @@ import plotly.express as px
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
+import plotly.graph_objects as go
 from pathlib import Path
 
 TYPE_COLORS = {
@@ -298,6 +299,12 @@ with col1_r5:
             if st.checkbox(t.capitalize(), value=default_checked, key=f"type_{t}_3"):
                 selected_types.append(t)
 
+    show_diag_line = st.checkbox(
+        "Show y = x reference line",
+        value=False,
+        help="When checked, draws a diagonal line where the two stats are equal."
+    )
+
 with col2_r5:
     st.subheader("Stat vs Stat Scatterplot")
 
@@ -330,6 +337,21 @@ with col2_r5:
                     "pokemon_id": True,
                 },
             )
+
+            if show_diag_line:
+                min_val = min(df_scatter[x_stat].min(), df_scatter[y_stat].min())
+                max_val = max(df_scatter[x_stat].max(), df_scatter[y_stat].max())
+
+                fig_scatter.add_trace(
+                    go.Scatter(
+                        x=[min_val, max_val],
+                        y=[min_val, max_val],
+                        mode="lines",
+                        name="y = x",
+                        line=dict(color="gray", dash="dash"),
+                        showlegend=True,
+                    )
+                )
 
             fig_scatter.update_layout(
                 xaxis_title=x_label,
