@@ -260,13 +260,14 @@ with col1_r5:
     }
 
     display_mode = st.selectbox(
-        "Points to display",
+        "Points to Display",
         [
             "Individual Pokémon Only",
             "Type Averages Only",
             "Both Individuals and Averages",
         ],
         index=0,
+        help="Individual Pokémon will appear as small data points. Type averages will appear as large data points."
     )
 
     x_label = st.selectbox(
