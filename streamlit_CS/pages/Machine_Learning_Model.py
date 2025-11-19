@@ -4,6 +4,7 @@ import numpy as np
 import altair as alt
 import plotly.express as px
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
 import seaborn as sns
 from pathlib import Path
 from sklearn.ensemble import RandomForestClassifier
@@ -176,28 +177,74 @@ st.subheader("Model Accuracy Summary")
 st.write(f"Mean cross-validated accuracy over {k_folds} folds: **{mean_acc * 100:.2f}%**")
 
 # ───────────────────────────
-# ROW 3 – example tree visualization
+# ROW 3 – Decision Tree Visualization
 # ───────────────────────────
 st.divider()
 st.subheader("Example Decision Tree from the Random Forest")
 
-if hasattr(viz_rf, "estimators_") and len(viz_rf.estimators_) > 0:
-    with st.expander("Show example decision tree (depth limited for readability)"):
-        fig, ax = plt.subplots(figsize=(14, 8))
+# Fit a separate RF on all filtered data using the current hyperparameters
+rf_viz = RandomForestClassifier(
+    n_estimators=n_estimators,
+    max_depth=rf_max_depth,
+    min_samples_split=min_samples_split,
+    min_samples_leaf=min_samples_leaf,
+    criterion=criterion,
+    max_features=max_features if max_features != "auto" else "auto",
+    bootstrap=bootstrap,
+    n_jobs=-1,
+)
 
-        plot_tree(
-            viz_rf.estimators_[0],  # first tree in the forest
-            feature_names=STAT_COLS,
-            class_names=class_names,
-            filled=True,
-            max_depth=3,            # keep shallow so it fits on the page
-            fontsize=6,
-            rounded=True,
-        )
+rf_viz.fit(X, y_encoded)
 
-        st.pyplot(fig)
-else:
-    st.info("Tree visualization not available (no trained estimators).")
+# Take the first tree for visualization
+tree_clf = rf_viz.estimators_[0]
+tree_ = tree_clf.tree_
+
+fig, ax = plt.subplots(figsize=(20, 10))
+
+# Plot once, then recolor nodes
+artists = plot_tree(
+    tree_clf,
+    feature_names=STAT_COLS,
+    class_names=class_names,
+    filled=True,        # we'll override the colors manually
+    rounded=True,
+    impurity=True,
+    ax=ax,
+)
+
+# tree_.value has shape (n_nodes, 1, n_classes)
+node_values = tree_.value
+
+for node_index, artist in enumerate(artists):
+    # Only recolor the node boxes (FancyBboxPatch)
+    if not isinstance(artist, plt.matplotlib.patches.FancyBboxPatch):
+        continue
+
+    counts = node_values[node_index][0]  # class counts at this node
+    total = counts.sum()
+    if total == 0:
+        continue
+
+    purity = counts.max() / total  # 0–1, 1 = perfectly pure
+    pred_class_idx = counts.argmax()
+    pred_class_name = class_names[pred_class_idx]
+
+    # Base color from the Pokémon type palette
+    base_hex = TYPE_COLORS.get(pred_class_name, "#808080")
+    base_rgb = np.array(mcolors.to_rgb(base_hex))
+    white = np.array([1.0, 1.0, 1.0])
+
+    # Blend toward white based on (1 - purity)
+    # purity = 1 → pure type color
+    # purity = 0.5 → halfway to white
+    blended_rgb = white * (1 - purity) + base_rgb * purity
+
+    artist.set_facecolor(blended_rgb)
+    artist.set_edgecolor(base_hex)
+    artist.set_linewidth(2)
+
+st.pyplot(fig)
 
 # ───────────────────────────
 # FOOTER
