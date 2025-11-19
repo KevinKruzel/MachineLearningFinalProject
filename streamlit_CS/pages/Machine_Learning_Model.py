@@ -109,7 +109,6 @@ viz_rf = RandomForestClassifier(
     criterion=criterion,
     max_features=max_features if max_features != "auto" else "auto",
     bootstrap=bootstrap,
-    random_state=42,
     n_jobs=-1,
 )
 
@@ -120,7 +119,7 @@ viz_rf.fit(X, y_encoded)
 # ───────────────────────────
 from sklearn.model_selection import StratifiedKFold
 
-kf = StratifiedKFold(n_splits=k_folds, shuffle=True, random_state=42)
+kf = StratifiedKFold(n_splits=k_folds, shuffle=True)
 
 fold_accuracies = []
 cm_total = np.zeros((len(class_names), len(class_names)), dtype=int)
@@ -137,7 +136,6 @@ for train_idx, test_idx in kf.split(X, y_encoded):
         criterion=criterion,
         max_features=max_features if max_features != "auto" else "auto",
         bootstrap=bootstrap,
-        random_state=42,
         n_jobs=-1,
     )
 
