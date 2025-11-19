@@ -178,8 +178,10 @@ st.subheader("Model Accuracy Summary")
 st.write(f"Mean cross-validated accuracy over {k_folds} folds: **{mean_acc * 100:.2f}%**")
 
 # ───────────────────────────
-# ROW 3 – Decision Tree Visualization (leaf nodes = type color)
+# ROW 3 – Decision Tree Visualization (simple filled tree)
 # ───────────────────────────
+from sklearn.tree import plot_tree
+
 st.divider()
 st.subheader("Example Decision Tree from the Random Forest")
 
@@ -199,63 +201,19 @@ rf_viz.fit(X, y_encoded)
 
 # Take one tree to visualize
 tree_clf = rf_viz.estimators_[0]
-tree_ = tree_clf.tree_
-node_values = tree_.value  # shape can be (n_nodes, n_classes) or (n_nodes, 1, n_classes)
 
 fig, ax = plt.subplots(figsize=(22, 12))
 
-# Draw the tree with neutral colors; we'll recolor boxes ourselves
-artists = plot_tree(
+plot_tree(
     tree_clf,
     feature_names=STAT_COLS,
     class_names=class_names,
-    filled=False,
+    filled=True,       # sklearn handles coloring
     rounded=True,
     impurity=True,
-    fontsize=12,
+    fontsize=10,
     ax=ax,
 )
-
-patch_index = 0
-
-for node_id in range(tree_.node_count):
-    # Advance to the next node box (FancyBboxPatch)
-    while patch_index < len(artists) and not isinstance(
-        artists[patch_index], mpatches.FancyBboxPatch
-    ):
-        patch_index += 1
-
-    if patch_index >= len(artists):
-        break  # safety
-
-    bbox = artists[patch_index]
-    patch_index += 1
-
-    # Get class counts at this node; handle both 2D and 3D shapes
-    node_val = node_values[node_id]
-    if hasattr(node_val, "ndim") and node_val.ndim > 1:
-        counts = node_val[0]
-    else:
-        counts = node_val
-
-    pred_idx = counts.argmax()
-    pred_class = class_names[pred_idx]
-
-    is_leaf = (
-        tree_.children_left[node_id] == -1
-        and tree_.children_right[node_id] == -1
-    )
-
-    if is_leaf:
-        color_key = str(pred_class).lower()
-        color = TYPE_COLORS.get(color_key, "#808080")
-        bbox.set_facecolor(color)
-        bbox.set_edgecolor("black")
-        bbox.set_linewidth(2.0)
-    else:
-        bbox.set_facecolor("#FFFFFF")
-        bbox.set_edgecolor("black")
-        bbox.set_linewidth(1.5)
 
 plt.tight_layout()
 st.pyplot(fig)
