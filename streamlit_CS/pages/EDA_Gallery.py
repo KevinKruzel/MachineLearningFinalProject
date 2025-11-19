@@ -9,6 +9,9 @@ from pathlib import Path
 from filters import apply_pokemon_filters
 from filters import TYPE_COLORS
 
+# ───────────────────────────
+# PAGE CONFIG
+# ───────────────────────────
 st.set_page_config(
     page_title="EDA Gallery",
     page_icon="📊",
@@ -16,12 +19,18 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+# ───────────────────────────
+# LOAD DATA
+# ───────────────────────────
 DATA_PATH = Path(__file__).parent.parent / "data" / "pokemon_dataset.csv"
 df = pd.read_csv(DATA_PATH)
 
-st.title("Exploratory Data Analysis Gallery")
-
 df_filtered = apply_pokemon_filters(df)
+
+# ───────────────────────────
+# PAGE HEADER
+# ───────────────────────────
+st.title("Exploratory Data Analysis Gallery")
 
 def stat_boxplot(container, df_filtered, stat_col, stat_label):
     with container:
