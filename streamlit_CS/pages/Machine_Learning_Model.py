@@ -208,6 +208,13 @@ feat_imp = (
 mean_acc = float(np.mean(fold_accuracies))
 
 with col2_r1:
+    st.markdown(
+        f"<h3 style='text-align:center; margin-top: 0.5rem;'>"
+        f"Mean Cross-Validated accuracy: {mean_acc * 100:.2f}%"
+        f"</h3>",
+        unsafe_allow_html=True,
+    )
+    
     st.subheader("Confusion Matrix (Aggregated Across Folds)")
 
     cm_fig = px.imshow(
@@ -224,13 +231,6 @@ with col2_r1:
     )
 
     st.plotly_chart(cm_fig, use_container_width=True)
-
-    st.markdown(
-        f"<h3 style='text-align:center; margin-top: 0.5rem;'>"
-        f"Mean cross-validated accuracy: {mean_acc * 100:.2f}%"
-        f"</h3>",
-        unsafe_allow_html=True,
-    )
 
 with col3_r1:
     st.subheader("Feature Importances")
