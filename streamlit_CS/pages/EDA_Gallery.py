@@ -225,40 +225,8 @@ with col_bar:
 # ───────────────────────────
 col1_r2, col2_r2 = st.columns(2)
 stat_boxplot(col1_r2, df_filtered, "hp", "HP")
-with col2_r2:
-    st.subheader("Attack Distribution by Primary Type (Violin)")
+stat_boxplot(col1_r2, df_filtered, "attack", "Attack")
 
-    if df_filtered.empty:
-        st.warning("No Pokémon available for the selected filters.")
-    else:
-        type_order = (
-            df_filtered.groupby("primary_type")["attack"]
-            .mean()
-            .reset_index()
-            .sort_values("attack")["primary_type"]
-            .tolist()
-        )
-
-        fig_attack_violin = px.violin(
-            df_filtered,
-            x="primary_type",
-            y="attack",
-            category_orders={"primary_type": type_order},
-            color="primary_type",
-            color_discrete_map=TYPE_COLORS,
-            box=True,
-            points="outliers",
-        )
-
-        fig_attack_violin.update_layout(
-            title="Attack Stat Distribution by Primary Type",
-            xaxis_title="Primary Type",
-            yaxis_title="Attack",
-            margin=dict(l=10, r=10, t=40, b=10),
-            showlegend=False,
-        )
-
-        st.plotly_chart(fig_attack_violin, use_container_width=True)
 
 # ───────────────────────────
 # ROW 3 – Defense, Special Attack
