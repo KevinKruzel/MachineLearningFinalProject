@@ -5,6 +5,7 @@ import altair as alt
 import plotly.express as px
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
+import matplotlib.patches as mpatches
 import seaborn as sns
 from pathlib import Path
 from sklearn.ensemble import RandomForestClassifier
