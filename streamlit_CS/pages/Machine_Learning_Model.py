@@ -68,13 +68,14 @@ min_class_count = int(class_counts.min())
 max_k_allowed = max(2, min(10, min_class_count))
 
 # ───────────────────────────
-# ROW 1 – controls (col 1) + confusion matrix (col 2)
+# ROW 1 – controls (col 1) + confusion matrix (col 2) + feature importances (col 3)
 # ───────────────────────────
-col1_r1, col2_r1 = st.columns([1, 2])
+col1_r1, col2_r1, col3_r1 = st.columns([1, 2, 1])
 
 with col1_r1:
     st.subheader("Random Forest Settings")
 
+    # K for Stratified K-Fold (bounded by smallest class size and max 10)
     k_folds = st.slider(
         "Number of Folds (K)",
         min_value=2,
@@ -84,6 +85,7 @@ with col1_r1:
     )
 
     n_estimators = st.slider("Number of Trees (n_estimators)", 50, 500, 200, step=10)
+
     max_depth = st.slider("Max Depth (None = unlimited)", 1, 50, 15)
     use_max_depth_none = st.checkbox("Disable max depth (use None)", value=False)
 
@@ -101,26 +103,8 @@ with col1_r1:
         rf_max_depth = max_depth
 
 # ───────────────────────────
-# Train single RF for visualization
-# ───────────────────────────
-viz_rf = RandomForestClassifier(
-    n_estimators=n_estimators,
-    max_depth=rf_max_depth,
-    min_samples_split=min_samples_split,
-    min_samples_leaf=min_samples_leaf,
-    criterion=criterion,
-    max_features=max_features if max_features != "auto" else "auto",
-    bootstrap=bootstrap,
-    n_jobs=-1,
-)
-
-viz_rf.fit(X, y_encoded)
-
-# ───────────────────────────
 # TRAIN MODEL WITH STRATIFIED K-FOLD
 # ───────────────────────────
-from sklearn.model_selection import StratifiedKFold
-
 kf = StratifiedKFold(n_splits=k_folds, shuffle=True)
 
 fold_accuracies = []
@@ -152,6 +136,25 @@ for train_idx, test_idx in kf.split(X, y_encoded):
 
 mean_acc = float(np.mean(fold_accuracies))
 
+# Fit one model on the full data for feature importances
+rf_full = RandomForestClassifier(
+    n_estimators=n_estimators,
+    max_depth=rf_max_depth,
+    min_samples_split=min_samples_split,
+    min_samples_leaf=min_samples_leaf,
+    criterion=criterion,
+    max_features=max_features if max_features != "auto" else "auto",
+    bootstrap=bootstrap,
+    n_jobs=-1,
+)
+rf_full.fit(X, y_encoded)
+
+importances = rf_full.feature_importances_
+feat_imp = (
+    pd.DataFrame({"feature": STAT_COLS, "importance": importances})
+    .sort_values("importance", ascending=False)
+)
+
 with col2_r1:
     st.subheader("Confusion Matrix (Aggregated Across Folds)")
 
@@ -169,6 +172,26 @@ with col2_r1:
     )
 
     st.plotly_chart(cm_fig, use_container_width=True)
+
+with col3_r1:
+    st.subheader("Feature Importances")
+
+    fig_imp = px.bar(
+        feat_imp,
+        x="importance",
+        y="feature",
+        orientation="h",
+        title="Relative Importance of Stats",
+        text_auto=".2f",
+    )
+
+    fig_imp.update_layout(
+        xaxis_title="Importance",
+        yaxis_title="Stat",
+        margin=dict(l=10, r=10, t=40, b=10),
+    )
+
+    st.plotly_chart(fig_imp, use_container_width=True)
 
 # ───────────────────────────
 # ROW 2 – simple accuracy print
