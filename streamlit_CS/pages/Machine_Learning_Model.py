@@ -183,6 +183,7 @@ st.write(f"Mean cross-validated accuracy over {k_folds} folds: **{mean_acc * 100
 st.divider()
 st.subheader("Example Decision Tree from the Random Forest")
 
+# Fit a Random Forest using current hyperparameters
 rf_viz = RandomForestClassifier(
     n_estimators=n_estimators,
     max_depth=rf_max_depth,
@@ -196,35 +197,46 @@ rf_viz = RandomForestClassifier(
 
 rf_viz.fit(X, y_encoded)
 
+# Take one tree to visualize
 tree_clf = rf_viz.estimators_[0]
 tree_ = tree_clf.tree_
+node_values = tree_.value  # shape can be (n_nodes, n_classes) or (n_nodes, 1, n_classes)
 
 fig, ax = plt.subplots(figsize=(22, 12))
 
+# Draw the tree with neutral colors; we'll recolor boxes ourselves
 artists = plot_tree(
     tree_clf,
     feature_names=STAT_COLS,
     class_names=class_names,
-    filled=False,      # we’ll do our own coloring
+    filled=False,
     rounded=True,
     impurity=True,
     fontsize=12,
     ax=ax,
 )
 
-node_values = tree_.value  # shape: (n_nodes, 1, n_classes) or (n_nodes, n_classes)
+patch_index = 0
 
-for node_id, artist in enumerate(artists):
-    # Each artist here is a matplotlib.text.Annotation
-    bbox = artist.get_bbox_patch()
-    if bbox is None:
-        continue  # safety, but usually every node has a bbox
+for node_id in range(tree_.node_count):
+    # Advance to the next node box (FancyBboxPatch)
+    while patch_index < len(artists) and not isinstance(
+        artists[patch_index], mpatches.FancyBboxPatch
+    ):
+        patch_index += 1
 
-    # Get class counts at this node
-    if node_values.ndim == 3:
-        counts = node_values[node_id][0]
+    if patch_index >= len(artists):
+        break  # safety
+
+    bbox = artists[patch_index]
+    patch_index += 1
+
+    # Get class counts at this node; handle both 2D and 3D shapes
+    node_val = node_values[node_id]
+    if hasattr(node_val, "ndim") and node_val.ndim > 1:
+        counts = node_val[0]
     else:
-        counts = node_values[node_id]
+        counts = node_val
 
     pred_idx = counts.argmax()
     pred_class = class_names[pred_idx]
@@ -239,12 +251,13 @@ for node_id, artist in enumerate(artists):
         color = TYPE_COLORS.get(color_key, "#808080")
         bbox.set_facecolor(color)
         bbox.set_edgecolor("black")
-        bbox.set_linewidth(2)
+        bbox.set_linewidth(2.0)
     else:
         bbox.set_facecolor("#FFFFFF")
         bbox.set_edgecolor("black")
         bbox.set_linewidth(1.5)
 
+plt.tight_layout()
 st.pyplot(fig)
 
 # ───────────────────────────
