@@ -10,7 +10,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import StratifiedKFold
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import accuracy_score, confusion_matrix
-from filters import apply_pokemon_filters, TYPE_COLORS
+from filters import apply_pokemon_filters
+from filters import TYPE_COLORS
 
 # ───────────────────────────
 # PAGE CONFIG
