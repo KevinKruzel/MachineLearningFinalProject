@@ -177,12 +177,12 @@ st.subheader("Model Accuracy Summary")
 st.write(f"Mean cross-validated accuracy over {k_folds} folds: **{mean_acc * 100:.2f}%**")
 
 # ───────────────────────────
-# ROW 3 – Decision Tree Visualization
+# ROW 3 – Decision Tree Visualization (Option B)
 # ───────────────────────────
 st.divider()
 st.subheader("Example Decision Tree from the Random Forest")
 
-# Fit a separate RF on all filtered data using the current hyperparameters
+# Fit RF for visualization (no random state so it changes each run unless user sets params)
 rf_viz = RandomForestClassifier(
     n_estimators=n_estimators,
     max_depth=rf_max_depth,
@@ -196,53 +196,44 @@ rf_viz = RandomForestClassifier(
 
 rf_viz.fit(X, y_encoded)
 
-# Take the first tree for visualization
 tree_clf = rf_viz.estimators_[0]
 tree_ = tree_clf.tree_
 
-fig, ax = plt.subplots(figsize=(20, 10))
+fig, ax = plt.subplots(figsize=(22, 12))
 
-# Plot once, then recolor nodes
+# Plot initial tree
 artists = plot_tree(
     tree_clf,
     feature_names=STAT_COLS,
     class_names=class_names,
-    filled=True,        # we'll override the colors manually
+    filled=True,
     rounded=True,
     impurity=True,
+    fontsize=12,      # reset font size
     ax=ax,
 )
 
-# tree_.value has shape (n_nodes, 1, n_classes)
+# Re-color leaves only
 node_values = tree_.value
 
 for node_index, artist in enumerate(artists):
-    # Only recolor the node boxes (FancyBboxPatch)
-    if not isinstance(artist, plt.matplotlib.patches.FancyBboxPatch):
-        continue
+    # Identify if it's a box representing a node
+    if isinstance(artist, plt.matplotlib.patches.FancyBboxPatch):
+        counts = node_values[node_index][0]
+        total = counts.sum()
+        pred_class_idx = counts.argmax()
+        pred_class = class_names[pred_class_idx]
 
-    counts = node_values[node_index][0]  # class counts at this node
-    total = counts.sum()
-    if total == 0:
-        continue
-
-    purity = counts.max() / total  # 0–1, 1 = perfectly pure
-    pred_class_idx = counts.argmax()
-    pred_class_name = class_names[pred_class_idx]
-
-    # Base color from the Pokémon type palette
-    base_hex = TYPE_COLORS.get(pred_class_name, "#808080")
-    base_rgb = np.array(mcolors.to_rgb(base_hex))
-    white = np.array([1.0, 1.0, 1.0])
-
-    # Blend toward white based on (1 - purity)
-    # purity = 1 → pure type color
-    # purity = 0.5 → halfway to white
-    blended_rgb = white * (1 - purity) + base_rgb * purity
-
-    artist.set_facecolor(blended_rgb)
-    artist.set_edgecolor(base_hex)
-    artist.set_linewidth(2)
+        # if leaf: solid type color
+        if tree_.children_left[node_index] == tree_.children_right[node_index] == -1:
+            artist.set_facecolor(TYPE_COLORS.get(pred_class, "#808080"))
+            artist.set_edgecolor("black")
+            artist.set_linewidth(2)
+        else:
+            # internal nodes white
+            artist.set_facecolor("white")
+            artist.set_edgecolor("black")
+            artist.set_linewidth(1.5)
 
 st.pyplot(fig)
 
