@@ -262,9 +262,9 @@ with col1_r5:
     display_mode = st.selectbox(
         "Points to display",
         [
-            "Individual Pokémon only",
-            "Type averages only",
-            "Both individuals and averages",
+            "Individual Pokémon Only",
+            "Type Averages Only",
+            "Both Individuals and Averages",
         ],
         index=0,
     )
@@ -331,7 +331,7 @@ with col2_r5:
         if df_scatter.empty:
             st.warning("No Pokémon match the selected types.")
         else:
-            if display_mode in ("Individual Pokémon only", "Both individuals and averages"):
+            if display_mode in ("Individual Pokémon Only", "Both Individuals and Averages"):
                 fig_scatter = px.scatter(
                     df_scatter,
                     x=x_stat,
@@ -370,7 +370,7 @@ with col2_r5:
                     },
                 )
 
-            if display_mode in ("Type averages only", "Both individuals and averages"):
+            if display_mode in ("Type Averages Only", "Both Individuals and Averages"):
                 type_means = (
                     df_scatter
                     .groupby("primary_type", as_index=False)[[x_stat, y_stat]]
