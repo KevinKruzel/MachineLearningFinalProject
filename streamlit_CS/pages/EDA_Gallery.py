@@ -134,7 +134,7 @@ def stat_boxplot(container, df_filtered, stat_col, stat_label):
                 x1=len(type_order)-0.5,
                 y0=overall_mean,
                 y1=overall_mean,
-                line=dict(color="gray", width=2, dash="dash"),
+                line=dict(color="red", width=2, dash="dash"),
             )
 
             fig_box.add_annotation(
@@ -143,7 +143,7 @@ def stat_boxplot(container, df_filtered, stat_col, stat_label):
                 text=f"Mean: {overall_mean:.1f}",
                 showarrow=False,
                 yshift=10,
-                font=dict(color="gray"),
+                font=dict(color="red"),
             )
 
             fig_box.update_layout(
