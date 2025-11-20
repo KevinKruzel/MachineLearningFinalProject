@@ -42,7 +42,7 @@ st.markdown("""
 This page uses a **Random Forest** machine learning model to predict a Pokémon’s **primary type** based on its six base stats.  
 The model is evaluated using **Stratified K-Fold Cross-Validation**, and its results are visualized through a **confusion matrix** and an overall **accuracy score**.
 The importance of each feature is also calculated and displayed on the right side of the page.
-The model’s parameters can be adjusted on the left of the page to see how tuning affects performance.
+The model’s hyperparameters can be adjusted on the left of the page to see how tuning affects performance.
 """)
 st.divider()
 
@@ -251,11 +251,6 @@ with col2_r1:
         unsafe_allow_html=True,
     )
 
-    st.markdown(
-        "<h3 style='text-align:center;'>Confusion Matrix</h3>",
-        unsafe_allow_html=True,
-    )
-
     cm_fig = px.imshow(
         cm_total,
         x=class_names,
@@ -267,6 +262,7 @@ with col2_r1:
     )
 
     cm_fig.update_layout(
+        title="Confusion Matrix (Stratified K-Fold)",
         margin=dict(l=10, r=10, t=40, b=10),
     )
 
