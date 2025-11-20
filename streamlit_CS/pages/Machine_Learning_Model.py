@@ -137,12 +137,12 @@ with col1_r1:
     )
 
     max_features_choice = st.selectbox(
-        "Max Features per Split",
-        ["sqrt", "log2", "all"],
-        index=0,
-        help="How many stats are considered at each split. Using fewer stats adds randomness and "
-             "can reduce overfitting. 'all' means all six stats are always considered."
-    )
+    "Max Features per Split",
+    ["sqrt", "log2", "None"],
+    index=0,
+    help="How many stats are considered at each split. 'sqrt' and 'log2' introduce randomness. "
+         "'None' means all features are always used."
+)
 
     bootstrap = st.checkbox(
         "Use Bootstrap Samples",
