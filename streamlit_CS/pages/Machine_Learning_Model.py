@@ -40,8 +40,9 @@ st.title("Machine Learning Model")
 st.caption(f"Current filters: {len(df_filtered)} Pokémon selected.")
 st.markdown("""
 This page uses a **Random Forest** machine learning model to predict a Pokémon’s **primary type** based on its six base stats.  
-The model is evaluated using **Stratified K-Fold Cross-Validation**, and its results are visualized through a **confusion matrix** and an overall **accuracy score**.  
-You can adjust the model’s parameters in the sidebar to see how tuning affects performance.
+The model is evaluated using **Stratified K-Fold Cross-Validation**, and its results are visualized through a **confusion matrix** and an overall **accuracy score**.
+The importance of each feature is also calculated and displayed on the right side of the page.
+The model’s parameters can be adjusted on the left of the page to see how tuning affects performance.
 """)
 st.divider()
 
@@ -297,7 +298,7 @@ From the results above, we see that predicting a Pokémon’s primary type using
 The confusion matrix highlights that many types are frequently misclassified as others with similar stat profiles, resulting in a relatively low overall accuracy. 
 The feature importance chart shows that certain stats tend to influence predictions more strongly than others, but not by a wide margin. 
 These findings suggest that base stats alone do not uniquely differentiate most Pokémon types, and additional features not included in this model may be needed to build a more accurate classification model.
-Despite the relatively low accuracy score of ~21%, this model is still an improvement over random predictions. A random prediction with 18 categories would yield an accuracy of ~5.5%.
+Despite the relatively low accuracy score of **~21%**, this model is still an improvement over random predictions. A random prediction with 18 categories would yield an accuracy of **~5.5%**.
 """)
 
 # ───────────────────────────
