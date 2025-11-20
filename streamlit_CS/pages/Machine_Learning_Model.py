@@ -39,7 +39,7 @@ df_filtered = apply_pokemon_filters(df)
 st.title("Machine Learning Model")
 st.caption(f"Current filters: {len(df_filtered)} Pokémon selected.")
 st.markdown(
-    "Placeholder text",
+    "This page uses a Random Forest machine learning model to predict a Pokémon’s primary type based on its six base stats. The model is evaluated using Stratified K-Fold Cross-Validation, and its results are visualized through a confusion matrix and overall accuracy score. You can adjust the model’s parameters in the sidebar to see how tuning affects performance.",
     unsafe_allow_html=True,
 )
 st.divider()
