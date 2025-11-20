@@ -112,7 +112,7 @@ with col1_r1:
     n_estimators = st.slider(
         "Number of Trees (n_estimators)",
         10,
-        300,
+        400,
         200,
         step=10,
         help="How many decision trees are in the forest. More trees usually improve stability, "
@@ -122,14 +122,14 @@ with col1_r1:
     max_depth = st.slider(
         "Max Depth (None = unlimited)",
         1,
-        20,
+        30,
         15,
         help="How many splits each tree is allowed to make from top to bottom. "
              "Shallower trees are simpler and may generalize better."
     )
 
     use_max_depth_none = st.checkbox(
-        "Disable max depth (use None)",
+        "Disable Max Depth",
         value=False,
         help="If checked, trees can grow as deep as they want until other stopping rules are hit."
     )
