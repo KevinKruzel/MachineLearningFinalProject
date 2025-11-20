@@ -307,7 +307,7 @@ Despite the relatively low accuracy score of **~21%**, this model is still an im
 from sklearn.tree import plot_tree
 
 st.divider()
-st.subheader("Example Decision Tree from the Random Forest (Max Depth = 3 for display)")
+st.subheader("Example Decision Tree from the Random Forest (Max tree depth displayed is 3)")
 
 # Fit a Random Forest using current hyperparameters
 rf_viz = RandomForestClassifier(
