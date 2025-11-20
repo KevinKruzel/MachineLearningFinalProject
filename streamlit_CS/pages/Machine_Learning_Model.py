@@ -239,11 +239,12 @@ mean_acc = float(np.mean(fold_accuracies))
 
 with col2_r1:
     st.markdown(
-        f"<h3 style='text-align:center; margin-top: 0.5rem;'>"
-        f"Mean Cross-Validated Accuracy: {mean_acc * 100:.2f}%"
-        f"</h3>",
+        f"<h2 style='text-align:center; margin-top: 0.5rem;'>"
+        f"Model Accuracy: {mean_acc * 100:.2f}%"
+        f"</h2>",
         unsafe_allow_html=True,
     )
+    st.divider()
     
     st.markdown(
     "<h3 style='text-align:center;'>Confusion Matrix</h3>",
