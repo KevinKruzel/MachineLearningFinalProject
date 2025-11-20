@@ -155,7 +155,8 @@ with col2_r1:
         x=class_names,
         y=class_names,
         text_auto=True,
-        color_continuous_scale="Blues",
+        aspect="auto",
+        color_continuous_scale="Reds",
         labels=dict(color="Count", x="Predicted Primary Type", y="True Primary Type"),
     )
 
