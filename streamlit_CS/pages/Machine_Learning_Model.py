@@ -39,7 +39,8 @@ df_filtered = apply_pokemon_filters(df)
 st.title("Machine Learning Model")
 st.caption(f"Current filters: {len(df_filtered)} Pokémon selected.")
 st.markdown(
-    
+    "Placeholder text",
+    unsafe_allow_html=True,
 )
 st.divider()
 
