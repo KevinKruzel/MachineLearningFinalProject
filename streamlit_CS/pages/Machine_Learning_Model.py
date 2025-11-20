@@ -38,6 +38,9 @@ df_filtered = apply_pokemon_filters(df)
 # ───────────────────────────
 st.title("Machine Learning Model")
 st.caption(f"Current filters: {len(df_filtered)} Pokémon selected.")
+st.markdown(
+    
+)
 st.divider()
 
 # Guard: need data and at least 2 classes
