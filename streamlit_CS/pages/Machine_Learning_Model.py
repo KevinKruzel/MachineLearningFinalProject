@@ -123,7 +123,7 @@ with col1_r1:
         "Max Tree Depth",
         1,
         20,
-        10,
+        8,
         help="How many splits each tree is allowed to make from top to bottom. "
              "Shallower trees are simpler and may generalize better."
     )
