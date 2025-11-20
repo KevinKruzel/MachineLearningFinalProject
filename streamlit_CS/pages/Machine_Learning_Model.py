@@ -136,12 +136,12 @@ with col1_r1:
              "Both try to create purer groups of types after each split."
     )
 
-    max_features = st.selectbox(
+    max_features_choice = st.selectbox(
         "Max Features per Split",
-        ["sqrt", "log2", "auto"],
+        ["sqrt", "log2", "all"],
         index=0,
         help="How many stats are considered at each split. Using fewer stats adds randomness and "
-             "can reduce overfitting."
+             "can reduce overfitting. 'all' means all six stats are always considered."
     )
 
     bootstrap = st.checkbox(
@@ -174,7 +174,7 @@ for train_idx, test_idx in kf.split(X, y_encoded):
         min_samples_split=min_samples_split,
         min_samples_leaf=min_samples_leaf,
         criterion=criterion,
-        max_features=max_features if max_features != "auto" else "auto",
+        max_features=rf_max_features,
         bootstrap=bootstrap,
         n_jobs=-1,
     )
@@ -195,7 +195,7 @@ rf_full = RandomForestClassifier(
     min_samples_split=min_samples_split,
     min_samples_leaf=min_samples_leaf,
     criterion=criterion,
-    max_features=max_features if max_features != "auto" else "auto",
+    max_features=rf_max_features,
     bootstrap=bootstrap,
     n_jobs=-1,
 )
@@ -269,7 +269,7 @@ rf_viz = RandomForestClassifier(
     min_samples_split=min_samples_split,
     min_samples_leaf=min_samples_leaf,
     criterion=criterion,
-    max_features=max_features if max_features != "auto" else "auto",
+    max_features=rf_max_features,
     bootstrap=bootstrap,
     n_jobs=-1,
 )
