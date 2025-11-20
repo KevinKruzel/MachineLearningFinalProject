@@ -90,9 +90,9 @@ if max_k_allowed < 2:
     max_k_allowed = 2
 
 # ───────────────────────────
-# ROW 1 – controls (col 1) + confusion matrix (col 2) + feature importances (col 3)
+# ROW 1 – controls (col 1) + confusion matrix + feature importances (col 2)
 # ───────────────────────────
-col1_r1, col2_r1, col3_r1 = st.columns([1, 2, 1])
+col1_r1, col2_r1 = st.columns([1, 2])
 
 with col1_r1:
     st.subheader("Random Forest Settings")
@@ -166,11 +166,11 @@ with col1_r1:
     )
 
     max_features_choice = st.selectbox(
-    "Max Features per Split",
-    ["sqrt", "log2", "None"],
-    index=0,
-    help="How many stats are considered at each split. 'sqrt' and 'log2' introduce randomness. "
-         "'None' means all features are always used."
+        "Max Features per Split",
+        ["sqrt", "log2", "None"],
+        index=0,
+        help="How many stats are considered at each split. 'sqrt' and 'log2' introduce randomness. "
+             "'None' means all features are always used."
     )
 
     if max_features_choice == "None":
@@ -246,14 +246,14 @@ mean_acc = float(np.mean(fold_accuracies))
 with col2_r1:
     st.markdown(
         f"<h2 style='text-align:center; margin-top: 0.5rem;'>"
-        f"* Model Accuracy: {mean_acc * 100:.2f}% *"
+        f"Model Accuracy: {mean_acc * 100:.2f}%"
         f"</h2>",
         unsafe_allow_html=True,
     )
-    
+
     st.markdown(
-    "<h3 style='text-align:center;'>Confusion Matrix</h3>",
-    unsafe_allow_html=True
+        "<h3 style='text-align:center;'>Confusion Matrix</h3>",
+        unsafe_allow_html=True,
     )
 
     cm_fig = px.imshow(
@@ -272,21 +272,22 @@ with col2_r1:
 
     st.plotly_chart(cm_fig, use_container_width=True)
 
-with col3_r1:
-    st.subheader("Feature Importances")
+    st.markdown(
+        "<h3 style='text-align:center; margin-top: 1rem;'>Feature Importances</h3>",
+        unsafe_allow_html=True,
+    )
 
     fig_imp = px.bar(
         feat_imp,
-        x="importance",
-        y="feature",
-        orientation="h",
+        x="feature",
+        y="importance",
         title="Relative Importance of Stats",
         text_auto=".2f",
     )
 
     fig_imp.update_layout(
-        xaxis_title="Importance",
-        yaxis_title="Stat",
+        xaxis_title="Stat",
+        yaxis_title="Importance",
         margin=dict(l=10, r=10, t=40, b=10),
     )
 
