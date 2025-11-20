@@ -244,7 +244,6 @@ with col2_r1:
         f"</h2>",
         unsafe_allow_html=True,
     )
-    st.divider()
     
     st.markdown(
     "<h3 style='text-align:center;'>Confusion Matrix</h3>",
