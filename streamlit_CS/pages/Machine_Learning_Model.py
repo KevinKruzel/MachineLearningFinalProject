@@ -272,11 +272,6 @@ with col2_r1:
 
     st.plotly_chart(cm_fig, use_container_width=True)
 
-    st.markdown(
-        "<h3 style='text-align:center; margin-top: 1rem;'>Feature Importances</h3>",
-        unsafe_allow_html=True,
-    )
-
     fig_imp = px.bar(
         feat_imp,
         x="feature",
