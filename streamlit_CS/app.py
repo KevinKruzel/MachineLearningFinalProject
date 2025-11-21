@@ -17,6 +17,7 @@ six base stats (HP, Attack, Defense, Special Attack, Special Defense, and Speed)
 
 This app uses interactive tools to explore the dataset and customize the Random Forest model used to predict a Pokémon’s primary type.
 Use the sidebar to filter the dataset to specific Pokémon to explore how these filters affect the distribution of the data and the accuracy of the model.
+    """
 )
 
 st.markdown("---")
