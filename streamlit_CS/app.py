@@ -7,7 +7,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-st.title("Machine Learning Final Project – Pokémon Type Prediction")
+st.title("🧭 Machine Learning Final Project – Pokémon Type Prediction")
 st.markdown("#### by Kevin Kruzel")
 
 st.markdown("""
