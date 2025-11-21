@@ -20,7 +20,7 @@ Use the sidebar to filter the dataset to specific Pokémon to explore how these 
 """
 )
 
-st.markdown("---")
+st.divider()
 
 st.markdown(
     """
@@ -46,4 +46,5 @@ Head over to the other pages in the sidebar to start exploring.
     unsafe_allow_html=True,
 )
 
+st.divider()
 st.caption("Built with Streamlit")
