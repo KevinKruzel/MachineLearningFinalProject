@@ -32,7 +32,8 @@ Use the **sidebar** to switch between pages:
   - View a series of boxplots to visualize the differences in distribution of Pokémon stats grouped by type.
   - Create a fully customizable scatterplot to explore the distribution of two select stats for all Pokémon in select type groups.
 
-- 🤖 **Machine Learning Model**  
+
+- ⚙️ **Machine Learning Model**  
   Build and evaluate a Random Forest model that predicts a Pokémon’s primary type.  
   - Adjust model hyperparameters (number of trees, depth, max features, etc.).
   - View a confusion matrix showing exactly what predictions the model is making.
