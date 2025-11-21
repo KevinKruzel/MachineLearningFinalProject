@@ -21,7 +21,7 @@ from filters import TYPE_COLORS
 # ───────────────────────────
 st.set_page_config(
     page_title="Machine Learning Model",
-    page_icon="🤖",
+    page_icon="⚙️",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -36,7 +36,7 @@ df_filtered = apply_pokemon_filters(df)
 # ───────────────────────────
 # PAGE HEADER
 # ───────────────────────────
-st.title("Machine Learning Model")
+st.title("⚙️ Machine Learning Model")
 st.caption(f"Current filters: {len(df_filtered)} Pokémon selected.")
 st.markdown("""
 This page uses a **Random Forest** machine learning model to predict a Pokémon’s **primary type** based on its six base stats.  
