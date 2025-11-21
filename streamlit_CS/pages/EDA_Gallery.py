@@ -112,9 +112,11 @@ def stat_boxplot(container, df_filtered, stat_col, stat_label):
 # ───────────────────────────
 col_heatmap, col_bar = st.columns([3, 2])  # 3/5 width and 2/5 width
 
+# Heatmap that shows the amount of Pokemon in each primary and secondary type combination
 with col_heatmap:
     st.subheader("Type Combination Heatmap")
 
+    # Check first if there are no Pokemon to chart
     if df_filtered.empty:
         st.warning("No Pokémon available for the selected filters.")
     else:
@@ -124,12 +126,14 @@ with col_heatmap:
         mono_mask = temp["secondary_type_display"].isna()
         temp.loc[mono_mask, "secondary_type_display"] = temp.loc[mono_mask, "primary_type"]
 
+        # Group all Pokemon by their primary type, and then by their secondary type
         type_counts = (
             temp.groupby(["primary_type", "secondary_type_display"])["pokemon_id"]
             .count()
             .reset_index(name="count")
         )
 
+        # Create the table that will be used for the heatmap
         pivot_table = type_counts.pivot_table(
             index="secondary_type_display",
             columns="primary_type",
@@ -137,11 +141,13 @@ with col_heatmap:
             fill_value=0,
         )
 
+        # Sort the table so that the types are in alphabetical order
         pivot_table = pivot_table.reindex(
             index=sorted(pivot_table.index),
             columns=sorted(pivot_table.columns),
         )
 
+        # Create the heatmap
         fig = px.imshow(
             pivot_table,
             text_auto=True,
@@ -150,6 +156,7 @@ with col_heatmap:
             labels=dict(color="Number of Pokémon"),
         )
 
+        # Update features about the heatmap
         fig.update_layout(
             xaxis_title="Primary Type",
             yaxis_title="Secondary Type",
@@ -158,12 +165,15 @@ with col_heatmap:
 
         st.plotly_chart(fig, use_container_width=True)
 
+# Bar chart that displays the amount of Pokemon in each primary type group
 with col_bar:
     st.subheader("Number of Pokémon by Primary Type")
 
+    # Check first if there are no Pokemon to chart
     if df_filtered.empty:
         st.warning("No Pokémon available for the selected filters.")
     else:
+        # Group Pokemon by their primary type and then sort them in alphabetical order
         type_counts_bar = (
             df_filtered.groupby("primary_type")["pokemon_id"]
             .count()
@@ -171,6 +181,7 @@ with col_bar:
             .sort_values("count", ascending=False)
         )
 
+        # Create the bar chart
         fig_bar = px.bar(
             type_counts_bar,
             x="primary_type",
@@ -181,8 +192,8 @@ with col_bar:
             text_auto=True,
         )
 
+        # Update other features of the bar chart
         fig_bar.update_traces(textposition="outside")
-
         fig_bar.update_layout(
             xaxis_title="Primary Type",
             yaxis_title="Number of Pokémon",
@@ -190,6 +201,7 @@ with col_bar:
             showlegend=False,
         )
 
+        # Display the bar chart
         st.plotly_chart(fig_bar, use_container_width=True)
 
 # ───────────────────────────
