@@ -214,10 +214,19 @@ with col_bar:
 
         # Display the bar chart
         st.plotly_chart(fig_bar, use_container_width=True)
-
+        
+st.divider()
 # ───────────────────────────
 # ROW 2 – HP, Attack
 # ───────────────────────────
+st.subheader("Visualizing the Difference in the Base Stats of Pokémon by Primary Type")
+st.markdown("""
+The underlying assumption about employing this model for the purposes of predicting a Pokémon's type using it's base stats is that each type of Pokémon has distinct differences.
+The boxplots created below aim to visual these differences between types. Each plot represents one of base stats, and includes a dashed red line that serves the purpose of
+representing the overall mean value of that stat across all Pokémon in the filtered dataset. The types are sorted in ascending order by their mean value.
+After looking at the boxplots, it is clear to see that while there is significant overlap between types, there is sufficient evidence to say that each type is distinct enough to warrant using our machine learning model.
+""")
+st.divider()
 col1_r2, col2_r2 = st.columns(2)
 stat_boxplot(col1_r2, df_filtered, "hp", "HP")
 stat_boxplot(col2_r2, df_filtered, "attack", "Attack")
