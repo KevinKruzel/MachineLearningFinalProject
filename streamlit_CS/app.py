@@ -30,8 +30,7 @@ Use the **sidebar** to switch between pages:
   Explore the Pokémon dataset with interactive visualizations.  
   - View a type heatmap and bar chart to see the distribution of primary and secondary types of Pokemon
   - View a series of boxplots to visualize the differences in distribution of Pokémon stats grouped by type.
-  - Create a fully customizable scatterplot to explore the distribution of two select stats for all Pokémon in select type groups.
-
+  - Create a fully customizable scatterplot to explore the distribution of two select stats for all Pokémon in select type groups.  
 
 - ⚙️ **Machine Learning Model**  
   Build and evaluate a Random Forest model that predicts a Pokémon’s primary type.  
