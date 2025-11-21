@@ -459,6 +459,10 @@ with col2_r5:
 
 st.divider()
 st.caption("Data was collected using pokeapi found here: https://pokeapi.co/")
+
+with st.expander("Data Preview"):
+    st.dataframe(df)
+    
 csv_data = df.to_csv(index=False).encode('utf-8')
 st.download_button(
     label="📥 Download Raw Data (CSV)",
