@@ -285,8 +285,68 @@ with col2_r1:
 
     st.plotly_chart(fig_imp, use_container_width=True)
 
-st.markdown("""
+# Expanding window that displays per-classes metrics
+with st.expander("Per-Type Performance Metrics", expanded=False):
+    cm = cm_total  # shape: (n_classes, n_classes)
+    total = cm.sum()
 
+    # True positives are the diagonal
+    tp = np.diag(cm)
+
+    # False positives: column sum minus TP
+    fp = cm.sum(axis=0) - tp
+
+    # False negatives: row sum minus TP
+    fn = cm.sum(axis=1) - tp
+
+    # True negatives: everything else
+    tn = total - tp - fp - fn
+
+    # Per-class accuracy: (TP + TN) / total samples
+    accuracy = (tp + tn) / total
+
+    # Per-class precision: TP / (TP + FP)
+    precision = np.divide(
+        tp,
+        tp + fp,
+        out=np.full_like(tp, np.nan, dtype=float),
+        where=(tp + fp) != 0,
+    )
+
+    # Per-class recall: TP / (TP + FN)
+    recall = np.divide(
+        tp,
+        tp + fn,
+        out=np.full_like(tp, np.nan, dtype=float),
+        where=(tp + fn) != 0,
+    )
+
+    # Per-class F1: 2 * P * R / (P + R)
+    f1 = np.divide(
+        2 * precision * recall,
+        precision + recall,
+        out=np.full_like(precision, np.nan),
+        where=(precision + recall) != 0,
+    )
+
+    metrics_df = pd.DataFrame(
+        {
+            "primary_type": class_names,
+            "accuracy": accuracy,
+            "precision": precision,
+            "recall": recall,
+            "f1_score": f1,
+        }
+    )
+
+    # Round for display
+    metrics_df[["accuracy", "precision", "recall", "f1_score"]] = (
+        metrics_df[["accuracy", "precision", "recall", "f1_score"]].round(3)
+    )
+
+    st.dataframe(metrics_df, use_container_width=True)
+
+st.markdown("""
 From the results above, we see that predicting a Pokémon’s primary type using only its base stats is challenging for a Random Forest model. 
 The confusion matrix highlights that many types are frequently misclassified as others with similar stat profiles, resulting in a relatively low overall accuracy. 
 The feature importance chart shows that certain stats tend to influence predictions more strongly than others, but not by a wide margin. 
