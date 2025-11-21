@@ -162,6 +162,7 @@ with col_heatmap:
 
         # Update features about the heatmap
         fig.update_layout(
+            title="Heatmap Showing the Amount of Pokémon With Each Type Combination",
             xaxis_title="Primary Type",
             yaxis_title="Secondary Type",
             margin=dict(l=10, r=10, t=40, b=10),
