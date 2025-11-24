@@ -74,7 +74,7 @@ def stat_bar_chart(stats_df: pd.DataFrame):
     )
 
     fig.update_layout(
-        title=None,
+        title="",
         xaxis_title=None,
         yaxis_title=None,
         margin=dict(l=10, r=10, t=5, b=5),
