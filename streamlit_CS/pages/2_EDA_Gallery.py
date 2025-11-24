@@ -109,7 +109,7 @@ def stat_boxplot(container, df_filtered, stat_col, stat_label):
             )
 
             # Display the chart
-            st.plotly_chart(fig_box, use_container_width=True, config={"displayModeBar": "hover"})
+            st.plotly_chart(fig_box, use_container_width=True, config={"displayModeBar": False})
 
 # ───────────────────────────
 # ROW 1
@@ -455,7 +455,7 @@ with col2_r5:
             )
 
             # Display the scatterplot chart
-            st.plotly_chart(fig_scatter, use_container_width=True, config={"displayModeBar": "hover"})
+            st.plotly_chart(fig_scatter, use_container_width=True, config={"displayModeBar": False})
 
 st.divider()
 st.caption("Data was collected using pokeapi found here: https://pokeapi.co/")
