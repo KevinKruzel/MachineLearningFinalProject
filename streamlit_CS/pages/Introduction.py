@@ -40,7 +40,7 @@ STAT_COLORS = {
 }
 
 # ───────────────────────────
-# HELPER: GET STATS FOR A SPECIES
+# Helper Functions
 # ───────────────────────────
 def get_pokemon_stats(df: pd.DataFrame, pokemon_id: int) -> pd.DataFrame:
     row = df.loc[df["pokemon_id"] == pokemon_id].iloc[0]
@@ -56,7 +56,6 @@ def get_pokemon_stats(df: pd.DataFrame, pokemon_id: int) -> pd.DataFrame:
 
     return pd.DataFrame({"Stat": list(stats.keys()), "Value": list(stats.values())})
 
-
 def stat_bar_chart(stats_df: pd.DataFrame, title: str):
     fig = px.bar(
         stats_df,
@@ -65,20 +64,24 @@ def stat_bar_chart(stats_df: pd.DataFrame, title: str):
         orientation="h",
         color="Stat",
         color_discrete_map=STAT_COLORS,
-        title=title,
-        text_auto=True,
+        text="Value",   # use value labels inside bars
     )
+
     fig.update_traces(
-        textangle=0,
-        textposition="outside"
+        textposition="inside",
+        insidetextanchor="middle",
+        cliponaxis=False,
     )
+
     fig.update_layout(
-        xaxis_title="Base Stat",
-        yaxis_title="",
-        margin=dict(l=10, r=10, t=40, b=10),
+        title=None,             # remove chart title
+        xaxis_title=None,       # remove axis label
+        yaxis_title=None,
+        margin=dict(l=10, r=10, t=5, b=5),
         showlegend=False,
         height=250,
     )
+
     return fig
 
 # ───────────────────────────
