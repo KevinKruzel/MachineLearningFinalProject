@@ -94,7 +94,7 @@ Pokémon battles revolve around **types** and **stats**.
 
 Every Pokémon has a primary type and may also have a secondary type (these Pokémon are often referred to has dual-typed).  
 Types interact through strengths and weaknesses (for example, Water is strong against Fire, but weak to Electric and Grass).  
-There are currently 18 types Pokémon can be classified, and they are listed here:
+There are currently 18 types Pokémon can be classified as, and they are listed here:
 """)
 
 st.markdown("### Pokémon Types")
