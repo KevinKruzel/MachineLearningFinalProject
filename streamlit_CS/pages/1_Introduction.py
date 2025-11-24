@@ -170,7 +170,7 @@ with col_pika:
     pika_stats = get_pokemon_stats(df, 25)  # Pikachu = ID 25
     if pika_stats is not None:
         fig_pika = stat_bar_chart(pika_stats)
-        st.plotly_chart(fig_pika, use_container_width=True, config={"displayModeBar": False)
+        st.plotly_chart(fig_pika, use_container_width=True, config={"displayModeBar": False})
     else:
         st.warning("Could not find Pikachu in the dataset.")
 
@@ -193,7 +193,7 @@ with col_weezing:
     
     weezing_stats = get_pokemon_stats(df, 110)  # Weezing = ID 110
     fig_weezing = stat_bar_chart(weezing_stats)
-    st.plotly_chart(fig_weezing, use_container_width=True, config={"displayModeBar": False)
+    st.plotly_chart(fig_weezing, use_container_width=True, config={"displayModeBar": False})
 
 # Charizard
 with col_char:
@@ -214,4 +214,4 @@ with col_char:
     
     char_stats = get_pokemon_stats(df, 6)  # Charizard = ID 6
     fig_char = stat_bar_chart(char_stats)
-    st.plotly_chart(fig_char, use_container_width=True, config={"displayModeBar": False)
+    st.plotly_chart(fig_char, use_container_width=True, config={"displayModeBar": False})
