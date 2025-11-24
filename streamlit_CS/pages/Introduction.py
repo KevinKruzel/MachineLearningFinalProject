@@ -73,6 +73,7 @@ def stat_bar_chart(stats_df: pd.DataFrame, title: str):
         yaxis_title="",
         margin=dict(l=10, r=10, t=40, b=10),
         showlegend=False,
+        height=250,
     )
     return fig
 
@@ -99,13 +100,21 @@ cols_row1 = st.columns(9)
 for col, t in zip(cols_row1, row1_types):
     with col:
         icon_path = TYPE_ICON_DIR / f"{t}.png"
-        st.image(icon_path, use_column_width=True, caption=t.capitalize())
+        st.image(icon_path, use_column_width=True)
+        st.markdown(
+            f"<div style='text-align:center;'>{t.capitalize()}</div>",
+            unsafe_allow_html=True,
+        )
 
 cols_row2 = st.columns(9)
 for col, t in zip(cols_row2, row2_types):
     with col:
         icon_path = TYPE_ICON_DIR / f"{t}.png"
-        st.image(icon_path, use_column_width=True, caption=t.capitalize())
+        st.image(icon_path, use_column_width=True)
+        st.markdown(
+            f"<div style='text-align:center;'>{t.capitalize()}</div>",
+            unsafe_allow_html=True,
+        )
 
 st.markdown("---")
 
@@ -138,7 +147,7 @@ with col_pika:
     st.subheader("Pikachu")
     pika_img = POKEMON_IMG_DIR / "pikachu.png"
     if pika_img.exists():
-        st.image(pika_img, use_column_width=True, caption="Pikachu")
+        st.image(pika_img, width=160, caption="Electric")
     else:
         st.caption("Add image at `images/pokemon/pikachu.png`")
 
@@ -154,7 +163,7 @@ with col_weezing:
     st.subheader("Weezing")
     weezing_img = POKEMON_IMG_DIR / "weezing.png"
     if weezing_img.exists():
-        st.image(weezing_img, use_column_width=True, caption="Weezing")
+        st.image(weezing_img, width=160, caption="Poison")
     else:
         st.caption("Add image at `images/pokemon/weezing.png`")
 
@@ -170,7 +179,7 @@ with col_char:
     st.subheader("Charizard")
     char_img = POKEMON_IMG_DIR / "charizard.png"
     if char_img.exists():
-        st.image(char_img, use_column_width=True, caption="Charizard")
+        st.image(char_img, width=160, caption="Fire / Flying")
     else:
         st.caption("Add image at `images/pokemon/charizard.png`")
 
