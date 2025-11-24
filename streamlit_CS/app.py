@@ -30,6 +30,8 @@ Use the **sidebar** to switch between pages:
     - Explanation of the six base stats every Pokémon has.
     - Examples of Pokémon from the dataset.
 
+<br>
+
 - 📊 **EDA Gallery**  - Explore the Pokémon dataset with interactive visualizations.  
   - View a type heatmap and bar chart to see the distribution of primary and secondary types of Pokémon.
   - View a series of boxplots to visualize the differences in distribution of Pokémon stats grouped by type.
