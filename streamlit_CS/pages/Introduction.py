@@ -13,6 +13,19 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+st.markdown(
+    """
+    <style>
+    img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 # ───────────────────────────
 # LOAD DATA
 # ───────────────────────────
@@ -144,9 +157,10 @@ col_pika, col_weezing, col_char = st.columns(3)
 
 # Pikachu
 with col_pika:
-    st.markdown("<div style='text-align:center;'>", unsafe_allow_html=True)
-
-    st.subheader("Pikachu")
+    st.markdown(
+    "<h3 style='text-align:center;'>Pikachu</h3>",
+    unsafe_allow_html=True,
+    )
     pika_img = POKEMON_IMG_DIR / "pikachu.png"
     if pika_img.exists():
         st.image(pika_img, width=160)
@@ -164,9 +178,10 @@ with col_pika:
 
 # Weezing
 with col_weezing:
-    st.markdown("<div style='text-align:center;'>", unsafe_allow_html=True)
-
-    st.subheader("Weezing")
+    st.markdown(
+    "<h3 style='text-align:center;'>Weezing</h3>",
+    unsafe_allow_html=True,
+    )
     weezing_img = POKEMON_IMG_DIR / "weezing.png"
     if weezing_img.exists():
         st.image(weezing_img, width=160)
@@ -181,9 +196,10 @@ with col_weezing:
 
 # Charizard
 with col_char:
-    st.markdown("<div style='text-align:center;'>", unsafe_allow_html=True)
-
-    st.subheader("Charizard")
+    st.markdown(
+    "<h3 style='text-align:center;'>Charizard</h3>",
+    unsafe_allow_html=True,
+    )
     char_img = POKEMON_IMG_DIR / "charizard.png"
     if char_img.exists():
         st.image(char_img, width=160)
