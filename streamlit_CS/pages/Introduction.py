@@ -94,7 +94,7 @@ Pokémon battles revolve around **types** and **stats**.
 
 Every Pokémon has a primary type and may also have a secondary type (these Pokémon are often referred to has dual-typed).  
 Types interact through strengths and weaknesses (for example, Water is strong against Fire, but weak to Electric and Grass).  
-Understanding how types combine and how stats differ across Pokémon is essential to both competitive play and model building.
+There are currently 18 types Pokémon can be classified, and they are listed here:
 """)
 
 st.markdown("### Pokémon Types")
@@ -137,7 +137,7 @@ Every Pokémon has six base stats that describe its general strengths:
 - **Special Defense:** Determines how much damage a Pokémon receives when hit with a special move.
 - **Speed:** Determines move order in battle (higher Speed usually attacks first).
 
-These stats are what our machine learning model uses to try to predict a Pokémon’s primary type.
+These stats are what the machine learning model uses to try to predict a Pokémon’s primary type.
 """)
 
 st.markdown("---")
