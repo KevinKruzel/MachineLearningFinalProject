@@ -13,18 +13,16 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-st.markdown(
-    """
-    <style>
-    img {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
+st.markdown("""
+<style>
+/* Center images inside Streamlit columns */
+[data-testid="stImage"] img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+</style>
+""", unsafe_allow_html=True)
 
 # ───────────────────────────
 # LOAD DATA
@@ -174,8 +172,6 @@ with col_pika:
     else:
         st.warning("Could not find Pikachu in the dataset.")
 
-    st.markdown("</div>", unsafe_allow_html=True)
-
 # Weezing
 with col_weezing:
     st.markdown(
@@ -192,8 +188,6 @@ with col_weezing:
     fig_weezing = stat_bar_chart(weezing_stats, "Weezing – Base Stats")
     st.plotly_chart(fig_weezing, use_container_width=True)
 
-    st.markdown("</div>", unsafe_allow_html=True)
-
 # Charizard
 with col_char:
     st.markdown(
@@ -209,5 +203,3 @@ with col_char:
     char_stats = get_pokemon_stats(df, 6)  # Charizard = ID 6
     fig_char = stat_bar_chart(char_stats, "Charizard – Base Stats")
     st.plotly_chart(fig_char, use_container_width=True)
-
-    st.markdown("</div>", unsafe_allow_html=True)
