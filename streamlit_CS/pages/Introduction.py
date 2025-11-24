@@ -144,48 +144,54 @@ col_pika, col_weezing, col_char = st.columns(3)
 
 # Pikachu
 with col_pika:
+    st.markdown("<div style='text-align:center;'>", unsafe_allow_html=True)
+
     st.subheader("Pikachu")
     pika_img = POKEMON_IMG_DIR / "pikachu.png"
     if pika_img.exists():
-        st.image(pika_img, width=160, caption="Electric")
+        st.image(pika_img, width=160)
     else:
         st.caption("Add image at `images/pokemon/pikachu.png`")
 
-    pika_stats = get_pokemon_stats(df, 25)
+    pika_stats = get_pokemon_stats(df, 25)  # Pikachu = ID 25
     if pika_stats is not None:
         fig_pika = stat_bar_chart(pika_stats, "Pikachu – Base Stats")
         st.plotly_chart(fig_pika, use_container_width=True)
     else:
         st.warning("Could not find Pikachu in the dataset.")
 
+    st.markdown("</div>", unsafe_allow_html=True)
+
 # Weezing
 with col_weezing:
+    st.markdown("<div style='text-align:center;'>", unsafe_allow_html=True)
+
     st.subheader("Weezing")
     weezing_img = POKEMON_IMG_DIR / "weezing.png"
     if weezing_img.exists():
-        st.image(weezing_img, width=160, caption="Poison")
+        st.image(weezing_img, width=160)
     else:
         st.caption("Add image at `images/pokemon/weezing.png`")
 
-    weezing_stats = get_pokemon_stats(df, 110)
-    if weezing_stats is not None:
-        fig_weezing = stat_bar_chart(weezing_stats, "Weezing – Base Stats")
-        st.plotly_chart(fig_weezing, use_container_width=True)
-    else:
-        st.warning("Could not find Weezing in the dataset.")
+    weezing_stats = get_pokemon_stats(df, 110)  # Weezing = ID 110
+    fig_weezing = stat_bar_chart(weezing_stats, "Weezing – Base Stats")
+    st.plotly_chart(fig_weezing, use_container_width=True)
+
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # Charizard
 with col_char:
+    st.markdown("<div style='text-align:center;'>", unsafe_allow_html=True)
+
     st.subheader("Charizard")
     char_img = POKEMON_IMG_DIR / "charizard.png"
     if char_img.exists():
-        st.image(char_img, width=160, caption="Fire / Flying")
+        st.image(char_img, width=160)
     else:
         st.caption("Add image at `images/pokemon/charizard.png`")
 
-    char_stats = get_pokemon_stats(df, 6)
-    if char_stats is not None:
-        fig_char = stat_bar_chart(char_stats, "Charizard – Base Stats")
-        st.plotly_chart(fig_char, use_container_width=True)
-    else:
-        st.warning("Could not find Charizard in the dataset.")
+    char_stats = get_pokemon_stats(df, 6)  # Charizard = ID 6
+    fig_char = stat_bar_chart(char_stats, "Charizard – Base Stats")
+    st.plotly_chart(fig_char, use_container_width=True)
+
+    st.markdown("</div>", unsafe_allow_html=True)
