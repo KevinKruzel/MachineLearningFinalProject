@@ -84,7 +84,7 @@ def stat_boxplot(container, df_filtered, stat_col, stat_label):
             fig_box.add_shape(
                 type="line",
                 x0=-0.5,
-                x1=len(type_order)-0.5,
+                x1=len(type_order),
                 y0=overall_mean,
                 y1=overall_mean,
                 line=dict(color="red", width=2, dash="dash"),
