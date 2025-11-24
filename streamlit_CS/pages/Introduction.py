@@ -13,17 +13,6 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-st.markdown("""
-<style>
-/* Center images inside Streamlit columns */
-[data-testid="stImage"] img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-</style>
-""", unsafe_allow_html=True)
-
 # ───────────────────────────
 # LOAD DATA
 # ───────────────────────────
@@ -156,14 +145,17 @@ col_pika, col_weezing, col_char = st.columns(3)
 # Pikachu
 with col_pika:
     st.markdown(
-    "<h3 style='text-align:center;'>Pikachu</h3>",
-    unsafe_allow_html=True,
+        "<h3 style='text-align:center;'>Pikachu</h3>",
+        unsafe_allow_html=True,
     )
+
     pika_img = POKEMON_IMG_DIR / "pikachu.png"
-    if pika_img.exists():
-        st.image(pika_img, width=160)
-    else:
-        st.caption("Add image at `images/pokemon/pikachu.png`")
+    img_left, img_center, img_right = st.columns([1, 2, 1])
+    with img_center:
+        if pika_img.exists():
+            st.image(pika_img, width=160)
+        else:
+            st.caption("Add image at `images/pokemon/pikachu.png`")
 
     pika_stats = get_pokemon_stats(df, 25)  # Pikachu = ID 25
     if pika_stats is not None:
@@ -175,14 +167,17 @@ with col_pika:
 # Weezing
 with col_weezing:
     st.markdown(
-    "<h3 style='text-align:center;'>Weezing</h3>",
-    unsafe_allow_html=True,
+        "<h3 style='text-align:center;'>Weezing</h3>",
+        unsafe_allow_html=True,
     )
+
     weezing_img = POKEMON_IMG_DIR / "weezing.png"
-    if weezing_img.exists():
-        st.image(weezing_img, width=160)
-    else:
-        st.caption("Add image at `images/pokemon/weezing.png`")
+    img_left, img_center, img_right = st.columns([1, 2, 1])
+    with img_center:
+        if weezing_img.exists():
+            st.image(weezing_img, width=160)
+        else:
+            st.caption("Add image at `images/pokemon/weezing.png`")
 
     weezing_stats = get_pokemon_stats(df, 110)  # Weezing = ID 110
     fig_weezing = stat_bar_chart(weezing_stats, "Weezing – Base Stats")
@@ -191,14 +186,17 @@ with col_weezing:
 # Charizard
 with col_char:
     st.markdown(
-    "<h3 style='text-align:center;'>Charizard</h3>",
-    unsafe_allow_html=True,
+        "<h3 style='text-align:center;'>Charizard</h3>",
+        unsafe_allow_html=True,
     )
+
     char_img = POKEMON_IMG_DIR / "charizard.png"
-    if char_img.exists():
-        st.image(char_img, width=160)
-    else:
-        st.caption("Add image at `images/pokemon/charizard.png`")
+    img_left, img_center, img_right = st.columns([1, 2, 1])
+    with img_center:
+        if char_img.exists():
+            st.image(char_img, width=160)
+        else:
+            st.caption("Add image at `images/pokemon/charizard.png`")
 
     char_stats = get_pokemon_stats(df, 6)  # Charizard = ID 6
     fig_char = stat_bar_chart(char_stats, "Charizard – Base Stats")
