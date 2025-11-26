@@ -58,8 +58,8 @@ if df_filtered["primary_type"].nunique() < 2:
 # ───────────────────────────
 # FEATURES AND TARGET
 # ───────────────────────────
+# Define the columns that will be used in the model
 STAT_COLS = ["hp", "attack", "defense", "special-attack", "special-defense", "speed"]
-
 df_ml = df_filtered.dropna(subset=STAT_COLS + ["primary_type"]).copy()
 
 # Extra guards: after dropna + filters we still need data and ≥ 2 classes
@@ -78,7 +78,7 @@ label_encoder = LabelEncoder()
 y_encoded = label_encoder.fit_transform(y)
 class_names = list(label_encoder.classes_)
 
-# For K-fold upper bound, we need class counts *from the filtered data*
+# For K-fold upper bound, we need class counts from the filtered data
 class_counts = df_ml["primary_type"].value_counts()
 min_class_count = int(class_counts.min())  # smallest class size
 
@@ -94,9 +94,11 @@ if max_k_allowed < 2:
 # ───────────────────────────
 col1_r1, col2_r1 = st.columns([1, 2])
 
+# Random Forest controls
 with col1_r1:
     st.subheader("Random Forest Settings")
 
+    # Slider for determining k, maxed out at 2 if previous settings limit it too much, default value of 5
     if max_k_allowed == 2:
         k_folds = 2
         st.caption(
@@ -115,6 +117,7 @@ with col1_r1:
             ),
         )
 
+    # Slider for determining the number of trees, default value of 200
     n_estimators = st.slider(
         "Number of Trees (n_estimators)",
         10,
@@ -125,6 +128,7 @@ with col1_r1:
              "but also take longer to train."
     )
 
+    # Slider for determining the maximum tree depth, default value of 8
     max_depth = st.slider(
         "Max Tree Depth",
         1,
@@ -134,12 +138,18 @@ with col1_r1:
              "Shallower trees are simpler and may generalize better."
     )
 
+    # Checkbox to overide the previous slider so that there is no max tree depth
     use_max_depth_none = st.checkbox(
         "Disable Max Tree Depth",
         value=False,
         help="If checked, trees can grow as deep as they want until other stopping rules are hit."
     )
+    if use_max_depth_none:
+        rf_max_depth = None
+    else:
+        rf_max_depth = max_depth
 
+    # Slider for determining the minimum number of samples required to split a node, default value of 2
     min_samples_split = st.slider(
         "Min Samples Split",
         2,
@@ -148,6 +158,7 @@ with col1_r1:
         help="The minimum number of data points required in a node before it can be split into children."
     )
 
+    # Slider for determining the minimum number of data points in a leaf node, default value of 1
     min_samples_leaf = st.slider(
         "Min Samples Leaf",
         1,
@@ -157,6 +168,7 @@ with col1_r1:
              "(the final box at the bottom of a tree)."
     )
 
+    # Selectbox to determine which criteria to use for calculating node purity
     criterion = st.selectbox(
         "Split Criterion",
         ["gini", "entropy"],
@@ -165,6 +177,7 @@ with col1_r1:
              "Both try to create purer groups of types after each split."
     )
 
+    # Selectbox to determine how many stats are considered at each split, default value of sqrt(6)
     max_features_choice = st.selectbox(
         "Max Features per Split",
         ["sqrt", "log2", "None"],
@@ -172,23 +185,18 @@ with col1_r1:
         help="How many stats are considered at each split. 'sqrt' and 'log2' introduce randomness. "
              "'None' means all features are always used."
     )
-
     if max_features_choice == "None":
         rf_max_features = None
     else:
         rf_max_features = max_features_choice
 
+    # Checkbox to toggle bootstrapping, default value of True
     bootstrap = st.checkbox(
         "Use Bootstrap Samples",
         value=True,
         help="If checked, each tree is trained on a random sample (with replacement) of the data. "
              "This is part of what makes a random forest work well."
     )
-
-    if use_max_depth_none:
-        rf_max_depth = None
-    else:
-        rf_max_depth = max_depth
 
 # ───────────────────────────
 # TRAIN MODEL WITH STRATIFIED K-FOLD
@@ -244,6 +252,7 @@ feat_imp = (
 mean_acc = float(np.mean(fold_accuracies))
 
 with col2_r1:
+    # Large text that displays the model accuracy
     st.markdown(
         f"<h2 style='text-align:center; margin-top: 0.5rem;'>"
         f"Model Accuracy: {mean_acc * 100:.2f}%"
@@ -251,6 +260,7 @@ with col2_r1:
         unsafe_allow_html=True,
     )
 
+    # Heatmap that shows the confusion matrix of the model
     cm_fig = px.imshow(
         cm_total,
         x=class_names,
@@ -268,6 +278,7 @@ with col2_r1:
 
     st.plotly_chart(cm_fig, use_container_width=True)
 
+    # Bar chart that displays feature importance
     fig_imp = px.bar(
         feat_imp,
         x="feature",
@@ -362,22 +373,8 @@ from sklearn.tree import plot_tree
 st.divider()
 st.subheader("Example Decision Tree from the Random Forest (Max tree depth displayed is 3)")
 
-# Fit a Random Forest using current hyperparameters
-rf_viz = RandomForestClassifier(
-    n_estimators=n_estimators,
-    max_depth=rf_max_depth,
-    min_samples_split=min_samples_split,
-    min_samples_leaf=min_samples_leaf,
-    criterion=criterion,
-    max_features=rf_max_features,
-    bootstrap=bootstrap,
-    n_jobs=-1,
-)
-
-rf_viz.fit(X, y_encoded)
-
-# Extract one tree
-tree_clf = rf_viz.estimators_[0]
+# Extract the first tree from the model
+tree_clf = model.estimators_[0]
 
 # Visualize only top part of the tree: max depth = 3
 fig, ax = plt.subplots(figsize=(22, 12))
@@ -386,19 +383,13 @@ plot_tree(
     tree_clf,
     feature_names=STAT_COLS,
     class_names=class_names,
-    filled=True,       # sklearn colors based on class majority
+    filled=True,
     rounded=True,
     impurity=True,
     fontsize=10,
-    max_depth=3,       # << limit display depth to 3
+    max_depth=3,
     ax=ax,
 )
 
 plt.tight_layout()
 st.pyplot(fig)
-
-# ───────────────────────────
-# FOOTER
-# ───────────────────────────
-st.divider()
-st.caption("**Data source:** https://pokeapi.co")
