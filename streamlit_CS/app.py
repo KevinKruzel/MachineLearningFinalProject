@@ -44,6 +44,7 @@ Use the **sidebar** to switch between pages:
   - Adjust model hyperparameters (number of trees, depth, max features, etc.).
   - View a confusion matrix showing exactly what predictions the model is making.
   - See feature importance in a bar chart to understand which stats matter most.
+  - Visualize per-type performance metrics in a drop-down menu to see which types the model performs better on.
   - Inspect an example decision tree from the forest to better understand the model.
 
 <br>
