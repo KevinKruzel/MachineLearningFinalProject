@@ -128,20 +128,6 @@ with col1_r1:
              "but also take longer to train."
     )
 
-    # Checkbox to force the model to use a single tree (decision-tree-like mode)
-    use_single_tree = st.checkbox(
-        "Use Single Tree (Decision Tree Mode)",
-        value=False,
-        help="When checked, the model uses only one tree instead of a full forest, "
-             "making it behave more like a single decision tree."
-    )
-
-    # Decide how many trees to actually use in the model
-    if use_single_tree:
-        n_estimators_effective = 1
-    else:
-        n_estimators_effective = n_estimators
-
     # Slider for determining the maximum tree depth, default value of 8
     max_depth = st.slider(
         "Max Tree Depth",
@@ -224,7 +210,7 @@ for train_idx, test_idx in kf.split(X, y_encoded):
     y_train, y_test = y_encoded[train_idx], y_encoded[test_idx]
 
     model = RandomForestClassifier(
-        n_estimators=n_estimators_effective,
+        n_estimators=n_estimators,
         max_depth=rf_max_depth,
         min_samples_split=min_samples_split,
         min_samples_leaf=min_samples_leaf,
@@ -245,7 +231,7 @@ for train_idx, test_idx in kf.split(X, y_encoded):
 
 # Fit one model on the full data for feature importances
 rf_full = RandomForestClassifier(
-    n_estimators=n_estimators_effective,
+    n_estimators=n_estimators,
     max_depth=rf_max_depth,
     min_samples_split=min_samples_split,
     min_samples_leaf=min_samples_leaf,
