@@ -138,7 +138,14 @@ we will only look at the base stats that are unique to every Pokémon species. H
 - **Special Defense:** Determines how much damage a Pokémon receives when hit with a special move.
 - **Speed:** Determines move order in battle (higher Speed usually attacks first).
 
-These stats are what the machine learning model uses to try to predict a Pokémon’s primary type.
+Pokémon can also use one of two varieties of moves in combat to do damage:
+- A physical move will reference the attacker's attack stat and the recipient's defense stat to determine damage.
+- A special move will reference the attacker's special attack stat and the recipient's special defense stat to determine damage.
+
+Typically speaking, certain Pokémon types will have greater access to physical moves compared to special moves and vice-versa.
+This encourages certain Pokémon of select types to focus on building up their attack stat or special attack stat, but not both.
+
+These six stats are what the machine learning model uses to try to predict a Pokémon’s primary type.
 """)
 
 st.markdown("---")
